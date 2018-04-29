@@ -1,0 +1,239 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = false; //Nao criara metodos estaticos
+}
+
+PARSER_BEGIN(Fun)
+package parser;
+
+public class Fun
+{
+  final static String VERSION = "X++ Compiler - Version 1.0 - 2018";
+  boolean MenosShort = false;
+
+  public static void main(String args []) throws ParseException
+  {
+    String filename = "";
+    Fun parser;
+    int i;
+    boolean ms = false;
+
+    System.out.println(VERSION);
+
+    if (args.length == 0)
+    {
+      System.out.println("Usase is: java Fun [-short] inputfile");
+      System.exit(0);
+    }
+
+    // le os parametros passados para o compilador
+    for (i = 0; i<args.length - 1; i++) 
+    {
+      if (args[i].toLowerCase().equals("-short")) 
+      {
+        ms = true;
+      }
+      else 
+      {
+        System.out.println("Usase is: java Fun [-short] inputfile");
+        System.exit(0);
+      }
+    }
+  
+    if(args[i].equals("-")) 
+    {
+      // le a entrada - padrao
+      System.out.println("Reading standart input...");
+      parser = new Fun(System.in);
+    }
+    else 
+    {
+      // le o arquivo
+      filename = args[args.length-1];
+      System.out.println("Reading from file " + filename + "...");
+      try {
+        parser = new Fun(new java.io.FileInputStream(filename));
+      }
+      catch (java.io.FileNotFoundException e) {
+        System.out.println("File " + filename + " not found.");
+        return;
+      }
+    }
+    parser.MenosShort = ms;
+    parser.program();
+
+    if (parser.token_source.foundLexError() != 0)
+    {
+      System.out.println(parser.token_source.foundLexError() + "Lexical Errors found");
+    }
+    else
+    {
+      System.out.println("Program successfully analized.");
+    }
+  }
+
+  static public String im(int x)
+  {
+    int k;
+    String s;
+    s = tokenImage[x];
+    k = s.lastIndexOf("\"");
+    try
+    {
+      s = s.substring(1,k);
+    } catch (StringIndexOutOfBoundsException ex)
+    {
+
+    }
+
+    return s;
+  }
+}
+
+PARSER_END(Fun)
+
+TOKEN_MGR_DECLS:
+{
+    int countLexError = 0;
+
+    public int foundLexError()
+    {
+        return countLexError;
+    }
+}
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+}
+
+SKIP:
+{
+  "/*" : MULTICOMMENTMODE
+}
+
+SKIP:
+{
+  "//" : SINGLECOMMENTMODE
+}
+
+TOKEN : /* OPERATORS */
+{
+  < PLUS : "+" >
+| < MINUS : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+| < NOT : "!" | "not" >
+| < AND : "&&" | "and" >
+| < OR : "||" | "or" >
+| < XOR : "^" | "xor" >
+}
+
+TOKEN :
+{
+  < FLOAT : "float" >
+| < BOOLEAN : "boolean" >
+| < CHAR : "char" >
+| < STRING : "string" >
+}
+
+TOKEN :
+{
+    < float_constant : ( ("-")? (["0"-"9"] (["0"-"9"])* "." ["0"-"9"] (["0"-"9"])*) ) >
+    | < boolean_constant : "true" | "false" >
+    | < char_constant : "\'" ( ["A"-"Z"] | ["a"-"z"] ) "\'" >
+}
+
+TOKEN :
+{
+  < CONSTANT : (< DIGIT >)+ >
+| < IDENT: ( <LETTER> (<LETTER> | <DIGIT> )* )>
+| < #DIGIT : [ "0"-"9" ] >
+| < #LETTER: ["A"-"Z", "a"-"z"] >
+}
+
+// Item 2
+<MULTICOMMENTMODE> SKIP:
+{
+  "*/" : DEFAULT
+  | <~[]>
+}
+
+<SINGLECOMMENTMODE> SKIP:
+{
+  <["\n","\r"]> : DEFAULT
+  | <~[]>  
+
+}
+
+// Item 3
+SPECIAL_TOKEN :
+{
+    <INVALID_LEXICAL:
+        (~ ["a"-"z", "A"-"Z",
+            "0"-"9",
+            "\"",
+            "\'",
+            "(",
+            ")",
+            "[",
+            "]",
+            "{",
+            "}",
+            ";",
+            ",",
+            ".",
+            "=",
+            ">",
+            "<",
+            "!",
+            "+",
+            "-",
+            "*",
+            "/",
+            "%",
+            " ",
+            "\t",
+            "\n",
+            "\r",
+            "\f"
+        ])+>
+        {
+            System.err.println("Line " + input_stream.getEndLine() + " - Invalid string found: " + image);
+            countLexError++;
+        }
+|
+    <INVALID_CONST:
+        "\"" (~ ["\n", "\r", "\""])* ["\n","\r"]>
+        {
+            System.err.println("Line " + input_stream.getEndLine() + " - String constant has a \\n: " + image);
+            countLexError++;
+        }
+}
+
+void program() :
+{}
+{
+    (
+        <PLUS> { System.out.println("Reconheceu PLUS"); }
+        | <MINUS> { System.out.println("Reconheceu MINUS"); }
+        | <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); }
+        | <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }
+        | <FLOAT> { System.out.println("Reconheceu FLOAT"); }
+        | <float_constant> { System.out.println("Reconheceu FLOAT VALUE"); }
+        | <BOOLEAN> { System.out.println("Reconheceu BOOLEAN"); }
+        | <boolean_constant> { System.out.println("Reconheceu BOOLEAN VALUE"); }
+        | <CHAR> { System.out.println("Reconheceu CHAR"); }
+        | <char_constant > { System.out.println("Reconheceu CHAR VALUE"); }
+        | <NOT> { System.out.println("Reconheceu NOT"); }
+        | <AND> { System.out.println("Reconheceu AND"); }
+        | <OR> { System.out.println("Reconheceu OR"); }
+        | <XOR> { System.out.println("Reconheceu XOR"); }
+    )*
+}
