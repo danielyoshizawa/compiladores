@@ -247,7 +247,7 @@ SPECIAL_TOKEN :
         System.err.println("Line " + input_stream.getEndLine() + " - String constante tem " + image + " seguido de \\n: ");
         countLexError++;
      }
-|    <INVALID_CHAR: ("\'" (~ ["\n", "\r", "\""])* ["\n","\r"] ) >
+|    <INVALID_CHAR: ("\'" (~ ["\n", "\r", "\'"])* ["\n","\r"] ) >
      {
         System.err.println("Line " + input_stream.getEndLine() + " - Char constante tem " + image + " seguido de \\n");
         countLexError++;
@@ -257,7 +257,7 @@ SPECIAL_TOKEN :
         System.err.println("Line " + input_stream.getEndLine() + " Isso não é PHP! =D");
         countLexError++;
      }
-|    <INVALID_FLOAT: ( "." <DIGIT> | <DIGIT> ".") >
+|    <INVALID_FLOAT: ("-")? ( "." <DIGIT> | <DIGIT> ".") >
      {
         System.err.println("Line " + input_stream.getEndLine() + " Não é um valor Float valido : " + image);
         countLexError++;
