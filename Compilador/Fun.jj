@@ -197,11 +197,11 @@ TOKEN :
     | < integer_constant : ( ("-")? (["0"-"9"])+ ) >
     | < boolean_constant : "true" | "false" | "True" | "False" >
     | < char_constant : "\'" ( ["A"-"Z"] | ["a"-"z"]
-                        |  ["0"-"9"] | <VALIDSIMBOLS>
+                        |  ["0"-"9"] | <VALIDSYMBOLS>
                         | ("\\""n") | ("\\""t") | ("\\""r") | ("\\""f") | ("\"") )
                           "\'">
     | < string_constant : "\"" ( ["A"-"Z"] | ["a"-"z"]
-                        | ["0"-"9"] | <VALIDSIMBOLS>
+                        | ["0"-"9"] | <VALIDSYMBOLS>
                         | ("\\""t") | ("\\""f") | ("\'")
                         )+ "\"" >
 }
@@ -212,7 +212,7 @@ TOKEN :
 | < IDENT: ( <LETTER> (<LETTER> | <DIGIT> )* )>
 | < #DIGIT : [ "0"-"9" ] >
 | < #LETTER: ["A"-"Z", "a"-"z"] >
-| < #VALIDSIMBOLS : ["a"-"z", "A"-"Z", "0"-"9", "(", ")",
+| < #VALIDSYMBOLS : ["a"-"z", "A"-"Z", "0"-"9", "(", ")",
                      "[", "]", "{", "}", ";", ",", ".", "=",
                      ">", "<", "!", "+", "-", "*", "/", "%", " ", "$", "^"] >
 }
@@ -275,6 +275,16 @@ SPECIAL_TOKEN :
 |    <INVALID_EMPTY_CHAR: ("\'"){2} >
      {
         System.err.println("Line " + input_stream.getEndLine() + " Não pode existir char vazio.");
+        countLexError++;
+     }
+|    <INVALID_SYMBOL_STRING: ("\"" (<INVALID_LEXICAL> | <LETTER> | <DIGIT> )*  "\"") >
+     {
+              System.err.println("Line " + input_stream.getEndLine() + " Character invalido dentro da string " + image);
+              countLexError++;
+     }
+|    <INVALID_SYMBOL_CHAR: ("\'" <INVALID_LEXICAL> "\'") >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " Character invalido " + image);
         countLexError++;
      }
 }
