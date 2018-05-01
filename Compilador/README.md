@@ -21,4 +21,4 @@ Na mesma pasta do projeto, execute os comandos abaixo para cada critério escolh
 > java parser.Fun -short aceitos.txt
 
 #### Tokens Recusados
-> java parser.Fun -short recusados.txt
+> java parser.Fun -short negados.txt
