@@ -1,16 +1,93 @@
-100.000.000.000
-14.00
-128.94
-1.231.434.108.899
-1.0
+/*
+    Arquivo de entradas aceitas pelo analisador lexico Fun
+    Trabalho realizado por (Ordem Alfabetica):
+        Daniel Yoshizawa
+        Guilherme Souza Nunes
+        Larissa Taw
+        Mayse Espindola
+*/
+
+// STRINGS
+" "
+"a"
+"ab"
+"abc"
+"1"
+"12"
+"123"
+"a1"
+"ab12"
+"-1"
+"-a"
+"1%"
+"\n"
+"\t"
+"\f"
+"\r"
+"aBcDeF1234$%^"
+"123AbCD( abcD )"
+"Compiladores Mikezera manda muito!!!!"
+
+// INTEGERS
+0
+1
+12
+123
+-1
+-12
+-123
+
+// FLOATS
+0.0
 0.1
-TRUE
-FALSE
+00.11
+11.0
+11.11
+-0.0
+-0.1
+-00.11
+-11.0
+-11.11
+
+// BOOLEANS
+true
+True
+false
+False
+
+// CHARACTERS
+' '
 'a'
-'w'
-'5'
-\n
+'1'
+'%'
+'-'
+'\n'
+'\t'
+'\r'
+'\f'
+
+// IDENTIFICADORES
+
+float
+boolean
+int
+not
+and
+or
+xor
+identificador
+banana
+
+// OPERADORES
+>=
++
+-
 =
+||
+&&
+*
+
+// EXEMPLOS COMPOSTOS
 (a >= 33 and b <= 321+4) or not(c <= 322*22/2 xor a > 34)
 A+B OR D-B
 a not b 
@@ -18,5 +95,6 @@ a not b
 1*5
 1 * 5
 12.23 / 32.233
-SDASDDDDAS
-zdsdasdadada
+float a = 1.0
+int z = 90000
+string Vegeta = "Over 9 Thousand";
