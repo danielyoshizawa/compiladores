@@ -24,3 +24,8 @@ $php_nao
 "@asa"
 "a@b"
 "a#as"
+// Caracteres especiais ASCII
+'à'
+'¦'
+'Þ'
+'¿'
