@@ -264,7 +264,17 @@ SPECIAL_TOKEN :
      }
 |    <INVALID_LINE_BREAK: ("\"" ((<LETTER> | <DIGIT> )* (("\\""n") | ("\\""r"))  (<LETTER> | <DIGIT> )*) "\"") >
      {
-        System.err.println("Line " + input_stream.getEndLine() + " Não pode existir quebra de linha no meio de string : ");
+        System.err.println("Line " + input_stream.getEndLine() + " Não pode existir quebra de linha no meio de string. ");
+        countLexError++;
+     }
+|    <INVALID_EMPTY_STRING: ("\""){2} >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " Não pode existir string vazia.");
+        countLexError++;
+     }
+|    <INVALID_EMPTY_CHAR: ("\'"){2} >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " Não pode existir char vazio.");
         countLexError++;
      }
 }
