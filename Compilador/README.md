@@ -1,14 +1,24 @@
-JavaCC 5.0
+# Compilador Fun
+## Requerimentos
+* JavaCC 5.0+
+* JDK 1.5+
 
-Compilar:
-javacc Fun.jj
-javac -d . *.java
+## Compilando
+Na pasta do projeto executar os seguintes comandos:
+#### Compilar Fun.jj
+> javacc Fun.jj
 
-System.in:
-java parser.Fun
+#### Compilar arquivos Java
+> javac -d . *.java
 
-Aceitos:
-java parser.Fun -short aceitos.txt
+## Utilizando
+Na mesma pasta do projeto, execute os comandos abaixo para cada critério escolhido:
 
-Negados:
-java parser.Fun -short negados.txt
+#### System.in
+> java parser.Fun
+
+#### Tokens aceitos:
+> java parser.Fun -short aceitos.txt
+
+#### Tokens Recusados
+> java parser.Fun -short recusados.txt
