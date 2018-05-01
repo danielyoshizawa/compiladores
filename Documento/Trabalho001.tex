@@ -88,7 +88,7 @@
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ---
 \titulo{Introdução a Compiladores - Trabalho I }
-\autor{Daniel Yoshizawa, Guilherme Nunes, Larissa Taw, Mayse Espíndola }
+\autor{Daniel Yoshizawa (13101269)\\Guilherme Nunes (13103611)\\Larissa Taw (14209793)\\Mayse Espíndola (11204360) }
 \local{Florianópolis, SC,  Brasil}
 \data{25 de abril de 2018}
 % ---
@@ -182,7 +182,7 @@ que serão usados para gerar a arvore de analise sintática da próxima atividad
 \section{Dificuldades encontradas}
 
 Algumas dificuldades foram encontradas durante a produção deste trabalho, entre elas a que se mostrou mais desafiadora foi determinar quais palavras devem ser aceitas e 
-quais não devem, para isso nos baseamos na própria linguagem Java e adicionamos algumas regras que achamos validas para esta nova linguagem, como não aceitar diversos caracteres que não gerariam valor a linguagem, como caracteres da  tabela extendida ASCII.
+quais não devem, para isso nos baseamos na própria linguagem Java e adicionamos algumas regras que achamos validas para esta nova linguagem.
 
 Outra dificuldade inicial foi a falta de conhecimento sobre a sintaxe da linguagem aceita pelo Javacc, como utilizar corretamente os \textbf{SPECIAL\_TOKENS} e como reutilizar tokens
 já criado, dificuldades estas que foram logo superadas com a leitura do livro e documentação da ferramenta.
@@ -242,12 +242,202 @@ XOR:
 
 Assim temos para o NOT, aceitar palavras que sejam \textbf{!} ou \textbf{not} ou \textbf{NOT}, qualquer valor fora deste grupo não pode ser considerado operador NOT, os outros operadores se assemelham muito com este.
 
+\newpage
+\section{Tabela de tokens}
+
+Abaixo são apresentadas as tabelas com os tokens aceitos e negados assim como o output gerado pelo programa Fun.
+
+\subsection{Aceitos}
+
+\begin{center}
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Palavra & Output \\
+\hline
+" " & Reconheceu STRING VALUE \\
+"a" & Reconheceu STRING VALUE \\
+"ab" & Reconheceu STRING VALUE \\
+"abc" & Reconheceu STRING VALUE \\
+"1" & Reconheceu STRING VALUE \\
+"12" & Reconheceu STRING VALUE \\
+"123" & Reconheceu STRING VALUE \\
+"a1" & Reconheceu STRING VALUE \\
+"ab12" & Reconheceu STRING VALUE \\
+"-1" & Reconheceu STRING VALUE \\
+"-a" & Reconheceu STRING VALUE \\
+"1\%" & Reconheceu STRING VALUE \\
+"\t" & Reconheceu STRING VALUE \\
+"\textbackslash f" &Reconheceu STRING VALUE \\
+"aBcDeF1234 " & Reconheceu STRING VALUE \\
+"123AbCD( abcD )" & Reconheceu STRING VALUE \\
+"Compiladores manda muito!!!!" & Reconheceu STRING VALUE \\
+0 & Reconheceu NUMERO INTEIRO \\
+1 & Reconheceu NUMERO INTEIRO \\ 
+12 & Reconheceu NUMERO INTEIRO \\
+123 & Reconheceu NUMERO INTEIRO \\ 
+-1 & Reconheceu NUMERO INTEIRO \\
+-12 & Reconheceu NUMERO INTEIRO \\
+-123 & Reconheceu NUMERO INTEIRO \\
+0.0 & Reconheceu FLOAT VALUE \\
+0.1 & Reconheceu FLOAT VALUE \\
+00.11 & Reconheceu FLOAT VALUE \\
+11.0 & Reconheceu FLOAT VALUE \\
+11.11 & Reconheceu FLOAT VALUE \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Palavra & Output \\
+\hline
+-0.0 & Reconheceu FLOAT VALUE \\
+-0.1 & Reconheceu FLOAT VALUE \\
+-00.11 & Reconheceu FLOAT VALUE \\
+-11.0 & Reconheceu FLOAT VALUE \\
+-11.11 & Reconheceu FLOAT VALUE \\
+true & Reconheceu BOOLEAN VALUE \\
+True & Reconheceu BOOLEAN VALUE \\
+false & Reconheceu BOOLEAN VALUE \\
+False & Reconheceu BOOLEAN VALUE \\
+' ' & Reconheceu CHAR VALUE \\
+'a' & Reconheceu CHAR VALUE \\
+'1' & Reconheceu CHAR VALUE \\
+'\%' & Reconheceu CHAR VALUE \\
+'-' & Reconheceu CHAR VALUE \\
+'\textbackslash n' & Reconheceu CHAR VALUE \\
+'\textbackslash t' & Reconheceu CHAR VALUE \\
+'\textbackslash r' & Reconheceu CHAR VALUE \\
+'\textbackslash f' & Reconheceu CHAR VALUE \\
+float & Reconheceu FLOAT \\
+boolean & Reconheceu BOOLEAN \\
+int & Reconheceu INTEGER \\ 
+char & Reconheceu CHAR \\
+string & Reconheceu STRING \\
+identificador & Reconheceu IDENTIFICADOR \\
+banana & Reconheceu IDENTIFICADOR \\ 
+String & Reconheceu IDENTIFICADOR \\
+>= & Reconheceu OPERADOR MENOR IGUAL QUE \\ 
++ & Reconheceu OPERADOR MAIS \\
+- & Reconheceu OPERADOR MENOS \\
+= & Reconheceu OPERADOR IGUAL \\
+|| & Reconheceu OR \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Palavra & Output \\
+\hline
+\&\& & Reconheceu AND \\
+* & Reconheceu OPERADOR MULTIPLICACAO \\
+not & Reconheceu NOT \\
+and & Reconheceu AND \\
+or & Reconheceu OR \\
+xor & Reconheceu XOR \\
+(a >= 33 and b <= 321+4) or not(c <= 322*22/2 xor a > 34) & Reconheceu ABRE PARENTES \\
+\multirow{25}{*}{ }& Reconheceu IDENTIFICADOR \\
+& Reconheceu OPERADOR MENOR IGUAL QUE \\
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu AND \\
+& Reconheceu IDENTIFICADOR \\ 
+& Reconheceu OPERADOR MENOR IGUAL QUE \\
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu OPERADOR MAIS \\ 
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu FECHA PARENTES \\
+& Reconheceu OR \\
+& Reconheceu NOT \\
+& Reconheceu ABRE PARENTES \\
+& Reconheceu IDENTIFICADOR \\ 
+& Reconheceu OPERADOR MENOR IGUAL QUE \\
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu OPERADOR MULTIPLICACAO \\
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu OPERADOR DIVISAO \\
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu XOR \\
+& Reconheceu IDENTIFICADOR \\
+& Reconheceu OPERADOR MAIOR QUE \\
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu FECHA PARENTES \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Palavra & Output \\
+\hline
+A+B OR D-B & Reconheceu IDENTIFICADOR \\
+\multirow{6}{*}{}& Reconheceu OPERADOR MAIS \\
+& Reconheceu IDENTIFICADOR \\
+& Reconheceu OR \\
+& Reconheceu IDENTIFICADOR \\
+& Reconheceu OPERADOR MENOS \\
+& Reconheceu IDENTIFICADOR \\
+a not b & Reconheceu IDENTIFICADOR \\
+\multirow{2}{*}{} & Reconheceu NOT \\
+ & Reconheceu IDENTIFICADOR \\
+1/4 {\^\ } 5 & Reconheceu NUMERO INTEIRO \\
+\multirow{4}{*}{}& Reconheceu OPERADOR DIVISAO \\ 
+& Reconheceu NUMERO INTEIRO \\
+& Reconheceu XOR \\
+& Reconheceu NUMERO INTEIRO \\ 
+1*5 & Reconheceu NUMERO INTEIRO \\
+\multirow{2}{*}{}&Reconheceu OPERADOR MULTIPLICACAO \\
+& Reconheceu NUMERO INTEIRO \\
+1 * 5 & Reconheceu NUMERO INTEIRO \\
+\multirow{2}{*}{}&Reconheceu OPERADOR MULTIPLICACAO \\
+& Reconheceu NUMERO INTEIRO \\
+12.23 / 32.233 & Reconheceu FLOAT VALUE \\
+\multirow{2}{*}{}& Reconheceu OPERADOR DIVISAO \\ 
+& Reconheceu FLOAT VALUE \\
+float a = 1.0 & Reconheceu FLOAT \\
+\multirow{3}{*}{}& Reconheceu IDENTIFICADOR \\
+& Reconheceu OPERADOR IGUAL \\
+& Reconheceu FLOAT VALUE \\
+int z = 90000 & Reconheceu INTEGER \\
+\multirow{4}{*}{}& Reconheceu IDENTIFICADOR \\
+& Reconheceu OPERADOR IGUAL \\
+& Reconheceu NUMERO INTEIRO \\ 
+string Vegeta = "Over 9 Thousand"; & Reconheceu STRING \\
+\multirow{5}{*}{}& Reconheceu IDENTIFICADOR \\
+& Reconheceu OPERADOR IGUAL \\
+& Reconheceu STRING VALUE \\
+& Reconheceu PONTO E VIRGULA \\ \hline
+\end{tabularx}
+\end{table}
+\end{center}
+
+\subsection{Negados}
+
+\begin{center}
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Palavra & Output \\
+\hline
+" & Line 9 Não pode existir char vazio. \\
+'''' & Line 10 Não pode existir string vazia. \\ 
+"@" & Line 11 Character invalido dentro da string "@"\\
+"@@@\$@\#32423@\#\$@\#" & Line 12 Character invalido dentro da string "@@@\$@\#32423@\#\$@\#" \\
+'@' &  Line 13 Character invalido '@' \\
+' &  Line 14 - Char constante tem ' seguido de \textbackslash n' \\
+" & Line 15 - String constante tem " seguido de \textbackslash n: \\
+.0 & Line 16 Não é um valor Float valido : .0 \\
+0. & Line 17 Não é um valor Float valido : 0.\\
+"abc\textbackslash ndef" & Line 18 Não pode existir quebra de linha no meio de string. \\
+"@asa" & Line 19 Character invalido dentro da string "@asa"\\
+"a@b" & Line 20 Character invalido dentro da string "a@b"\\
+"a\#as" & Line 21 Character invalido dentro da string "a\#as" \\ \hline
+\end{tabularx}
+\end{table}
+\end{center}
+
+\newpage
 \section{Conclusão}
 
 Com esse trabalhos conseguimos compreender melhor o funcionamento de um analisador léxico assim como o entendimento do uso da ferramenta Javacc para criação de um compilador.
 
 Com o presente iniciamos a série de trabalhos da disciplina com o intuito final de construir todas as etapas de um compilador, gerando assim uma linguagem de programação que possa ser compilada utilizando o material gerado nestes trabalhos.
-
 
 \bookmarksetup{startatroot}
 \end{document}

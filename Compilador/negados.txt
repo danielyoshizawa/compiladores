@@ -19,8 +19,3 @@
 "@asa"
 "a@b"
 "a#as"
-// Caracteres especiais ASCII
-'�'
-'�'
-'�'
-'�'
