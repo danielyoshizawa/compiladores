@@ -11,67 +11,81 @@ package parser;
 
 public class Fun
 {
-  final static String VERSION = "X++ Compiler - Version 1.0 - 2018";
   boolean MenosShort = false;
 
   public static void main(String args []) throws ParseException
   {
     String filename = "";
     Fun parser;
-    int i;
     boolean ms = false;
+    String intro_msg = "Trabalho de Introdução a Compiladores. ";
+    String modo_padrao_msg = "Fun está operando em modo padrão.";
+    String modo_arquivo_msg = "Fun está operando em modo leitura de arquivo.";
+    String input_msg = "Insira o valor que deseja validar (Para sair Ctrl+C)";
+    String usage_msg = "Uso : -short <path/do/arquivo> \n Pode ser utilizado sem parametros para modo de input de valores";
+    String file_not_found_msg = "Arquivo não foi localizado, favor verificar se está correto";
+    String reading_file_msg = "Lendo o arquivo : ";
+    String lexical_error_msg = " erros lexicos foram encontrados";
 
-    System.out.println(VERSION);
+    System.out.println(intro_msg);
 
     if (args.length == 0)
     {
-      System.out.println("Usase is: java Fun [-short] inputfile");
-      System.exit(0);
-    }
-
-    // le os parametros passados para o compilador
-    for (i = 0; i<args.length - 1; i++) 
-    {
-      if (args[i].toLowerCase().equals("-short")) 
+      System.out.println(modo_padrao_msg);
+      parser = new Fun(System.in);
+      parser.MenosShort = false;
+      System.out.println(input_msg);
+      try
       {
-        ms = true;
+        // TODO : Não foi possivel utilizar loop pois o codigo que controla a tty
+        //        é gerado pelo javacc.
+        parser.program();
+        lexError(lexical_error_msg, parser.token_source.foundLexError());
       }
-      else 
+      // TODO : Exibir mensagens mais significativas ou não tratar os erros,
+      //        considerando que a excecao lancada pelo java eh mais significativa.
+      catch (Exception ex)
       {
-        System.out.println("Usase is: java Fun [-short] inputfile");
+        System.err.println(ex);
         System.exit(0);
       }
     }
-  
-    if(args[i].equals("-")) 
-    {
-      // le a entrada - padrao
-      System.out.println("Reading standart input...");
-      parser = new Fun(System.in);
-    }
-    else 
-    {
-      // le o arquivo
-      filename = args[args.length-1];
-      System.out.println("Reading from file " + filename + "...");
-      try {
-        parser = new Fun(new java.io.FileInputStream(filename));
-      }
-      catch (java.io.FileNotFoundException e) {
-        System.out.println("File " + filename + " not found.");
-        return;
-      }
-    }
-    parser.MenosShort = ms;
-    parser.program();
-
-    if (parser.token_source.foundLexError() != 0)
-    {
-      System.out.println(parser.token_source.foundLexError() + "Lexical Errors found");
-    }
     else
     {
-      System.out.println("Program successfully analized.");
+        // Imprimi mensagem de auxilio (Usage Message)
+        if ( args.length == 1)
+        {
+            System.out.println(usage_msg);
+            System.exit(0);
+        }
+        // TODO : Assume que apenas 1 arquivo será passado por vez,
+        //        melhorar os argumentos para tratar multiplos arquivos.
+        else if (args.length == 2)
+        {
+            if (args[0].toLowerCase().equals("-short"))
+            {
+                ms = true;
+            }
+            else
+            {
+                System.out.println(usage_msg);
+                System.exit(0);
+            }
+
+            filename = args[1];
+            System.out.println(reading_file_msg + filename);
+            try {
+                parser = new Fun(new java.io.FileInputStream(filename));
+                parser.MenosShort = ms;
+                parser.program();
+                lexError(lexical_error_msg, parser.token_source.foundLexError());
+            }
+            catch (java.io.FileNotFoundException e)
+            {
+                System.out.println(file_not_found_msg);
+                System.exit(0);
+            }
+        }
     }
   }
 
@@ -84,12 +98,28 @@ public class Fun
     try
     {
       s = s.substring(1,k);
-    } catch (StringIndexOutOfBoundsException ex)
+    }
+    catch (StringIndexOutOfBoundsException ex)
     {
-
+        System.out.println(ex);
+        System.exit(0);
     }
 
     return s;
+  }
+
+  static public void lexError(String msg, int errorCount)
+  {
+      String program_success_msg = "O programa foi corretamente analisado";
+
+      if (errorCount != 0)
+      {
+        System.out.println(errorCount + msg);
+      }
+      else
+      {
+        System.out.println(program_success_msg);
+      }
   }
 }
 
@@ -128,11 +158,19 @@ TOKEN : /* OPERATORS */
   < PLUS : "+" >
 | < MINUS : "-" >
 | < MULTIPLY : "*" >
+| < ASSIGN : "=" >
 | < DIVIDE : "/" >
 | < NOT : "!" | "not" >
 | < AND : "&&" | "and" >
 | < OR : "||" | "or" >
 | < XOR : "^" | "xor" >
+| < GT : ">" >
+| < LT : "<" >
+| < EQ : "==" >
+| < LE: "<=">
+| < GE: ">=">
+| < NEQ : "!=" | "><" >
+| < REM : "%" >
 }
 
 TOKEN :
@@ -141,13 +179,29 @@ TOKEN :
 | < BOOLEAN : "boolean" >
 | < CHAR : "char" >
 | < STRING : "string" >
+| < INTEGER : "int" >
 }
 
 TOKEN :
 {
-    < float_constant : ( ("-")? (["0"-"9"] (["0"-"9"])* "." ["0"-"9"] (["0"-"9"])*) ) >
-    | < boolean_constant : "true" | "false" >
-    | < char_constant : "\'" ( ["A"-"Z"] | ["a"-"z"] ) "\'" >
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACE: "{" >
+| < RBRACE: "}" >
+| < LBRACKET: "[" >
+| < RBRACKET: "]" >
+| < SEMICOLON: ";" >
+| < COMMA: "," >
+| < DOT: "." >
+}
+
+TOKEN :
+{
+      < float_constant : ( ("-")? ( (["0"-"9"])+ "." (["0"-"9"])+) ) >
+    | < integer_constant : ( ("-")? (["0"-"9"])+ ) >
+    | < boolean_constant : "true" | "false" | "True" | "False" >
+    | < char_constant : "\'" ( ["A"-"Z"] | ["a"-"z"] | ( ["0"-"9"] | " " )) "\'">
+    | < string_constant : "\"" ( ["A"-"Z"] | ["a"-"z"] | ( ["0"-"9"] | " " ))+ "\"" >
 }
 
 TOKEN :
@@ -221,10 +275,10 @@ void program() :
 {}
 {
     (
-        <PLUS> { System.out.println("Reconheceu PLUS"); }
-        | <MINUS> { System.out.println("Reconheceu MINUS"); }
-        | <MULTIPLY> { System.out.println("Reconheceu MULTIPLY"); }
-        | <DIVIDE> { System.out.println("Reconheceu DIVIDE"); }
+          <PLUS> { System.out.println("Reconheceu OPERADOR MAIS"); }
+        | <MINUS> { System.out.println("Reconheceu OPERADOR MENOS"); }
+        | <MULTIPLY> { System.out.println("Reconheceu OPERADOR MULTIPLICACAO"); }
+        | <DIVIDE> { System.out.println("Reconheceu OPERADOR DIVISAO"); }
         | <FLOAT> { System.out.println("Reconheceu FLOAT"); }
         | <float_constant> { System.out.println("Reconheceu FLOAT VALUE"); }
         | <BOOLEAN> { System.out.println("Reconheceu BOOLEAN"); }
@@ -235,5 +289,25 @@ void program() :
         | <AND> { System.out.println("Reconheceu AND"); }
         | <OR> { System.out.println("Reconheceu OR"); }
         | <XOR> { System.out.println("Reconheceu XOR"); }
+        | <INTEGER> { System.out.println("Reconheceu INTEGER"); }
+        | <integer_constant> { System.out.println("Reconheceu NUMERO INTEIRO"); }
+        | <LPAREN> { System.out.println("Reconheceu ABRE PARENTES"); }
+        | <RPAREN> { System.out.println("Reconheceu FECHA PARENTES"); }
+        | <ASSIGN> { System.out.println("Reconheceu OPERADOR IGUAL"); }
+        | <GT> { System.out.println("Reconheceu OPERADOR MAIOR QUE"); }
+        | <LT> { System.out.println("Reconheceu OPERADOR MENOR QUE"); }
+        | <EQ> { System.out.println("Reconheceu OPERADOR IGUAL"); }
+        | <LE> { System.out.println("Reconheceu OPERADOR MENOR IGUAL QUE"); }
+        | <GE> { System.out.println("Reconheceu OPERADOR MENOR IGUAL QUE"); }
+        | <NEQ> { System.out.println("Reconheceu OPERADOR DIFERENTE DE "); }
+        | <REM> { System.out.println("Reconheceu OPERADOR PORCENTO"); }
+        | <LBRACE> { System.out.println("Reconheceu ABRE CHAVES"); }
+        | <RBRACE> { System.out.println("Reconheceu FECHA CHAVES"); }
+        | <LBRACKET> { System.out.println("Reconheceu ABRE COLCHETES"); }
+        | <RBRACKET> { System.out.println("Reconheceu FECHA COLCHETES"); }
+        | <SEMICOLON> { System.out.println("Reconheceu PONTO E VIRGULA"); }
+        | <COMMA> { System.out.println("Reconheceu VIRGULA "); }
+        | <DOT> { System.out.println("Reconheceu PONTO"); }
+        | <string_constant> { System.out.println("Reconheceu STRING"); }
     )*
 }
