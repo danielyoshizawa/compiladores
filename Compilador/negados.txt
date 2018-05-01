@@ -1,6 +1,23 @@
-.56
-1224.
-"a"
-'ab'
-' a'
-&
+/*
+    Arquivo de entradas negadas pelo analisador lexico Fun
+    Trabalho realizado por (Ordem Alfabetica):
+        Daniel Yoshizawa
+        Guilherme Souza Nunes
+        Larissa Taw
+        Mayse Espindola
+*/
+''
+""
+"@"
+"@@@$@#32423@#$@#"
+'@'
+'
+"
+\n
+\t
+\f
+\r
+$php_nao
+.0
+0.
+"abc\ndef"

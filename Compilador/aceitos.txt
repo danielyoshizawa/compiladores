@@ -66,17 +66,17 @@ False
 '\r'
 '\f'
 
-// IDENTIFICADORES
-
+// TIPOS
 float
 boolean
 int
-not
-and
-or
-xor
+char
+string
+
+// IDENTIFICADORES
 identificador
 banana
+String
 
 // OPERADORES
 >=
@@ -86,6 +86,10 @@ banana
 ||
 &&
 *
+not
+and
+or
+xor
 
 // EXEMPLOS COMPOSTOS
 (a >= 33 and b <= 321+4) or not(c <= 322*22/2 xor a > 34)

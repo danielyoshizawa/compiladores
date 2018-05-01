@@ -37,13 +37,9 @@ public class Fun
       System.out.println(input_msg);
       try
       {
-        // TODO : Não foi possivel utilizar loop pois o codigo que controla a tty
-        //        é gerado pelo javacc.
         parser.program();
         lexError(lexical_error_msg, parser.token_source.foundLexError());
       }
-      // TODO : Exibir mensagens mais significativas ou não tratar os erros,
-      //        considerando que a excecao lancada pelo java eh mais significativa.
       catch (Exception ex)
       {
         System.err.println(ex);
@@ -206,7 +202,7 @@ TOKEN :
                           "\'">
     | < string_constant : "\"" ( ["A"-"Z"] | ["a"-"z"]
                         | ["0"-"9"] | <VALIDSIMBOLS>
-                        | ("\\""n") | ("\\""t") | ("\\""r") | ("\\""f") | ("\'")
+                        | ("\\""t") | ("\\""f") | ("\'")
                         )+ "\"" >
 }
 
@@ -238,21 +234,39 @@ TOKEN :
 // Item 3
 SPECIAL_TOKEN :
 {
-    <INVALID_LEXICAL:(~ ["a"-"z", "A"-"Z", "0"-"9", "\"", "\'", "(",
+     <INVALID_LEXICAL:(~ ["a"-"z", "A"-"Z", "0"-"9", "\"", "\'", "(",
                          ")", "[", "]", "{", "}", ";", ",", ".", "=",
                          ">", "<", "!", "+", "-", "*", "/", "%", " ", "\t",
-                         "\n", "\r", "\f"] )+>
-        {
-            System.err.println("Line " + input_stream.getEndLine() + " - Invalid string found: " + image);
-            countLexError++;
-        }
-|
-    <INVALID_CONST:
-        "\"" (~ ["\n", "\r", "\""])* ["\n","\r"]>
-        {
-            System.err.println("Line " + input_stream.getEndLine() + " - String constant has a \\n: " + image);
-            countLexError++;
-        }
+                         "\n", "\r", "\f"] )+ >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " - String invalida encontrada: " + image);
+        countLexError++;
+     }
+|    <INVALID_CONST: ("\"" (~ ["\n", "\r", "\""])* ["\n","\r"] ) >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " - String constante tem " + image + " seguido de \\n: ");
+        countLexError++;
+     }
+|    <INVALID_CHAR: ("\'" (~ ["\n", "\r", "\""])* ["\n","\r"] ) >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " - Char constante tem " + image + " seguido de \\n");
+        countLexError++;
+     }
+|     <INVALID_DOLLAR_SIGN_IDENT: ( "$" <IDENT> ) >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " Isso não é PHP! =D");
+        countLexError++;
+     }
+|    <INVALID_FLOAT: ( "." <DIGIT> | <DIGIT> ".") >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " Não é um valor Float valido : " + image);
+        countLexError++;
+     }
+|    <INVALID_LINE_BREAK: ("\"" ((<LETTER> | <DIGIT> )* (("\\""n") | ("\\""r"))  (<LETTER> | <DIGIT> )*) "\"") >
+     {
+        System.err.println("Line " + input_stream.getEndLine() + " Não pode existir quebra de linha no meio de string : ");
+        countLexError++;
+     }
 }
 
 void program() :
@@ -293,6 +307,7 @@ void program() :
         | <SEMICOLON> { System.out.println("Reconheceu PONTO E VIRGULA"); }
         | <COMMA> { System.out.println("Reconheceu VIRGULA "); }
         | <DOT> { System.out.println("Reconheceu PONTO"); }
-        | <string_constant> { System.out.println("Reconheceu STRING"); }
+        | <STRING> { System.out.println("Reconheceu STRING"); }
+        | <string_constant> { System.out.println("Reconheceu STRING VALUE"); }
     )*
 }
