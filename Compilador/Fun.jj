@@ -205,7 +205,7 @@ TOKEN :
                         | ("\\""n") | ("\\""t") | ("\\""r") | ("\\""f") | ("\"") )
                           "\'">
     | < string_constant : "\"" ( ["A"-"Z"] | ["a"-"z"]
-                        | ( ["0"-"9"] | <VALIDSIMBOLS>)
+                        | ["0"-"9"] | <VALIDSIMBOLS>
                         | ("\\""n") | ("\\""t") | ("\\""r") | ("\\""f") | ("\'")
                         )+ "\"" >
 }
@@ -259,7 +259,8 @@ void program() :
 {}
 {
     (
-          <PLUS> { System.out.println("Reconheceu OPERADOR MAIS"); }
+          <IDENT> { System.out.println("Reconheceu IDENTIFICADOR"); }
+        | <PLUS> { System.out.println("Reconheceu OPERADOR MAIS"); }
         | <MINUS> { System.out.println("Reconheceu OPERADOR MENOS"); }
         | <MULTIPLY> { System.out.println("Reconheceu OPERADOR MULTIPLICACAO"); }
         | <DIVIDE> { System.out.println("Reconheceu OPERADOR DIVISAO"); }
