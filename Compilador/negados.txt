@@ -13,11 +13,6 @@
 '@'
 '
 "
-\n
-\t
-\f
-\r
-$php_nao
 .0
 0.
 "abc\ndef"
@@ -25,7 +20,7 @@ $php_nao
 "a@b"
 "a#as"
 // Caracteres especiais ASCII
-'à'
-'¦'
-'Þ'
-'¿'
+'ï¿½'
+'ï¿½'
+'ï¿½'
+'ï¿½'
