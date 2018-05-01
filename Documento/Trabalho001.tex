@@ -1,0 +1,255 @@
+% abtex2-modelo-artigo.tex, v-1.9.2 laurocesar
+% Copyright 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/ 
+%
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% abnTeX2: Modelo de Artigo Acadêmico em conformidade com
+% ABNT NBR 6022:2003: Informação e documentação - Artigo em publicação 
+% periódica científica impressa - Apresentação
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	11pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE % títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	portuguese,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+	]{abntex2}
+
+
+% ---
+% PACOTES
+% ---
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{nomencl} 			% Lista de simbolos
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{dpfloat, booktabs}
+% ---
+\graphicspath{ {images/} }		
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+% ---
+\usepackage{lipsum}				% para geração de dummy text
+% ---
+		
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+% ---
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Introdução a Compiladores - Trabalho I }
+\autor{Daniel Yoshizawa, Guilherme Nunes, Larissa Taw, Mayse Espíndola }
+\local{Florianópolis, SC,  Brasil}
+\data{25 de abril de 2018}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={Modelo de artigo científico com abnTeX2},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{atigo científico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ---
+% Altera as margens padrões
+% ---
+\setlrmarginsandblock{3cm}{3cm}{*}
+\setulmarginsandblock{3cm}{3cm}{*}
+\checkandfixthelayout
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+\setlength{\parskip}{0.2cm}
+
+\SingleSpacing
+
+\begin{document}
+
+\frenchspacing 
+
+\maketitle
+
+\begin{resumoumacoluna}
+Criação de um analisador léxico utilizando a ferramenta de geração de código Javacc para a disciplina de Introdução a compiladores, neste documento
+são apresentadas as dificuldades encontradas para a geração do analisador léxico assim como a tabela de resultados para as entradas definidas e a explicação
+da solução dos items A,B,C e D do exercício proposto.
+
+ \vspace{\onelineskip}
+ 
+ \noindent
+ \textbf{Palavras-chaves}: Introdução a Compiladores, Javacc, Fun, Analisador Léxico
+\end{resumoumacoluna}
+
+\newpage
+\tableofcontents*
+\newpage
+
+\textual
+\section{Descrição das atividade}
+
+Foi construído um analisador léxico para a linguagem de programação Fun, proposta na disciplina de Introdução a compiladores, baseada em Java e utilizando a 
+ferramenta Javacc para geração de código.
+
+Neste trabalho foi criado um programa em Java para realizar a analise das palavras que aceita entradas pelo console ou arquivo de texto, definindo gramáticas de
+aceitação nos modelos do Javacc e tratamento de erros.
+
+Para tal foram criadas regras de produção que são analisadas pelo código, retornando erros léxicos, quando ocorrem, e palavras que são aceitas pela linguagem definida.
+
+Para definir a gramática foram utilizadas expressões regulares que definem as regras da linguagem, para palavras aceitas e negadas, sendo as mesmas tratadas pelo
+analisador léxico gerado. Entre tais regras foram definidas expressões para validar Floats, Booleans, Char, Strings e Integer, Operadores, Símbolos Especiais e Identificadores,
+que serão usados para gerar a arvore de analise sintática da próxima atividade.
+
+\section{Dificuldades encontradas}
+
+Algumas dificuldades foram encontradas durante a produção deste trabalho, entre elas a que se mostrou mais desafiadora foi determinar quais palavras devem ser aceitas e 
+quais não devem, para isso nos baseamos na própria linguagem Java e adicionamos algumas regras que achamos validas para esta nova linguagem, como não permitir iniciar
+identificadores com "\$", pratica utilizada em linguagem como PHP e JavaScript, e não aceitar diversos caracteres que não gerariam valor a linguagem, como caracteres da  tabela
+extendida ASCII.
+
+Outra dificuldade inicial foi a falta de conhecimento sobre a sintaxe da linguagem aceita pelo Javacc, como utilizar corretamente os \textbf{SPECIAL\_TOKENS} e como reutilizar tokens
+já criado, dificuldades estas que foram logo superadas com a leitura do livro e documentação da ferramenta.
+
+Apesar de procurarmos cobrir todos os casos possíveis para a linguagem é provável que ainda existam palavras que não se encaixem em nenhuma das regras não definidas,
+para isso estaremos evoluindo o código conforme formos progredindo na disciplina.
+
+\section{Soluções aplicadas}
+
+Para definir as regras da linguagem nos baseamos em linguagens de programação já consagradas, como Java e C++, seguindo algumas das regras utilizadas por estas
+linguagens, assim como soluções que foram discutidas em grupo para chegar a uma solução interessante para o fim deste trabalho.
+
+Com o auxilio do livro base e da documentação da ferramenta foi possível  sanar a maioria das nossas duvidas em relação ao Javacc e com o material e explicações das aulas
+pudemos criar as expressões regulares que julgamos mais adequadas a solução do problema.
+
+\section{Solução do item 5}
+
+O item 5 do trabalho pede para incluir suporte a 3 tipos de dados e 4 operadores lógicos, sendo \textbf{float}, \textbf{boolean} e \textbf{char} os tipos de dados 
+e \textbf{not}, \textbf{and}, \textbf{or} e \textbf{xor} os operadores lógicos, neste item iremos apresentar como chegamos a solução destes items.
+
+Foram definidos os \textbf{Tokens} \textbf{<DIGIT>}, \textbf{<LETTER>} e \textbf{<VALIDSYMBOLS>} para auxiliar na solução desses itens, também o \textbf{SPECIAL\_TOKENS} 
+\textbf{<INVALID\_LEXICAL>} auxiliou na solução.
+
+\subsection{float}
+
+A solução adotada pra o tratamento de floats foi definir o \textbf{Token} \textbf{FLOAT} como < FLOAT : ``float" \ > para aceitar o identificador do tipo float e também a \textbf{float\_constante} com o seguinte expressão regular para verificar se é um \textbf{FLOAT} valido \[ \left( \left( ``-" \right)? \left( \left([``0"-``9"]\right)+ ``." \left([``0"-"9"]\right)+\right) \right) \]
+
+A expressão regular utilizada para identificar valores \textbf{Float} invalidos foi \[ \left( ``-" \right)? \left( ``." \left<DIGIT\right> | \left<DIGIT\right> ``." \right) \]
+Assim tratando o character \textbf{-} como opcional no inicio da palavra, seguido de um ponto depois dígitos ou dígitos seguidos de um ponto apenas, como floats inválidos.
+
+\subsection{boolean}
+
+Para a validação de tipos booleanos é verificado se a palavra pertence ao conjunto, \textbf{true}, \textbf{True}, \textbf{false} ou \textbf{False}, caso seja exatamente um destes elementos é validado como tipo \textbf{boolean}, tambem o identificador \textbf{boolean} foi criado, porem este é validado como identificador do tipo e não como valor.
+
+\subsection{char}
+
+Chars possuem uma validação um pouco mais complexa pois aceitam um grupo maior de caracteres que os demais apresentados aqui, para validar um char foi necessário criar uma expressão regular que atenda a seguinte lógica para toda entrada que comece com aspas simples, possua qualquer letra minúscula ou maiúscula, número, símbolos válidos ou 
+"\textbackslash n", "\textbackslash r", "\textbackslash f" ou "\textbackslash ``" e terminar com aspas simples deve ser aceita como char validos.
+
+Foi considerado como inválidas palavras que comecem com aspas simples e encontrem "\textbackslash n", "\textbackslash r" antes de encontrar uma nova aspas simples e caracteres inválidos entre aspas simples.
+
+\subsection{Operados lógicos}
+
+Para operadores lógicos foram adotados as seguintes expressões
+
+NOT : 
+\[ \left< NOT : "!"  \vert  "not"  \vert  "NOT" \right> \]
+
+AND:
+\[ \left< AND : "\&\&"  \vert  "and"  \vert  "AND" \right> \]
+
+OR:
+\[ \left< OR : "\vert\vert"  \vert  "or"  \vert  "OR" \right> \]
+
+XOR:
+\[ \left< XOR : "  \hat{\ }  "  \vert  "xor"  \vert  "XOR" \right> \]
+
+Assim temos para o NOT, aceitar palavras que sejam \textbf{!} ou \textbf{not} ou \textbf{NOT}, qualquer valor fora deste grupo não pode ser considerado operador NOT, os outros operadores se assemelham muito com este.
+
+\section{Conclusão}
+
+Com esse trabalhos conseguimos compreender melhor o funcionamento de um analisador léxico assim como o entendimento do uso da ferramenta Javacc para criação de um compilador.
+
+Com o presente iniciamos a série de trabalhos da disciplina com o intuito final de construir todas as etapas de um compilador, gerando assim uma linguagem de programação que possa ser compilada utilizando o material gerado nestes trabalhos.
+
+
+\bookmarksetup{startatroot}
+\end{document}

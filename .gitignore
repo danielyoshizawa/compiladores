@@ -1,3 +1,10 @@
 *.java
 *.class
 *.idea
+*.aux
+*.pdf
+*.log
+*.synctex.gz
+*.toc
+*.DS_Store
+*.idx
