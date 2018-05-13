@@ -4,14 +4,18 @@
 options
 {
   static = false; //Nao criara metodos estaticos
+  DEBUG_LOOKAHEAD = true;
 }
 
 PARSER_BEGIN(Fun)
 package parser;
 
+import java.io.*;
+
 public class Fun
 {
   boolean MenosShort = false;
+  int contParseError = 0;
 
   public static void main(String args []) throws ParseException
   {
@@ -26,6 +30,8 @@ public class Fun
     String file_not_found_msg = "Arquivo não foi localizado, favor verificar se está correto";
     String reading_file_msg = "Lendo o arquivo : ";
     String lexical_error_msg = " erros lexicos foram encontrados";
+    boolean debug = false;
+    int i = 0;
 
     System.out.println(intro_msg);
 
@@ -56,25 +62,50 @@ public class Fun
         }
         // TODO : Assume que apenas 1 arquivo será passado por vez,
         //        melhorar os argumentos para tratar multiplos arquivos.
-        else if (args.length == 2)
+        else
         {
-            if (args[0].toLowerCase().equals("-short"))
-            {
-                ms = true;
-            }
-            else
-            {
-                System.out.println(usage_msg);
-                System.exit(0);
-            }
 
-            filename = args[1];
+            for (i = 0; i < args.length - 1; ++i)
+            {
+                if (args[i].toLowerCase().equals("-short"))
+                {
+                    ms = true;
+                }
+                else if( args[i].toLowerCase().equals("-debug_as"))
+                {
+                    debug = true;
+                }
+                else
+                {
+                    System.out.println(usage_msg);
+                    System.exit(0);
+                }
+            }
+            filename = args[i];
             System.out.println(reading_file_msg + filename);
             try {
                 parser = new Fun(new java.io.FileInputStream(filename));
                 parser.MenosShort = ms;
-                parser.program();
-                lexError(lexical_error_msg, parser.token_source.foundLexError());
+                if (!debug)
+                {
+                    parser.disable_tracing(); // desabilita verbose do AS
+                }
+
+                // Infelizmente este foi o unico jeito de garantir que parser vai existir dentro do catch que
+                // incrementa parser.contParseError.
+                try
+                {
+                    parser.program();
+                }
+                catch (ParseException ex)
+                {
+                    System.err.println(ex.getMessage());
+                    parser.contParseError = 1;
+                } finally
+                {
+                    lexError(lexical_error_msg, parser.token_source.foundLexError());
+                    System.out.println(parser.contParseError + " Syntatic Error Found");
+                }
             }
             catch (java.io.FileNotFoundException e)
             {
