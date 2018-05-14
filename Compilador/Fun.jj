@@ -521,42 +521,5 @@ void arglist():
 void program() :
 {}
 {
-    (
-          <IDENT> { System.out.println("Reconheceu IDENTIFICADOR"); }
-        | <PLUS> { System.out.println("Reconheceu OPERADOR MAIS"); }
-        | <MINUS> { System.out.println("Reconheceu OPERADOR MENOS"); }
-        | <MULTIPLY> { System.out.println("Reconheceu OPERADOR MULTIPLICACAO"); }
-        | <DIVIDE> { System.out.println("Reconheceu OPERADOR DIVISAO"); }
-        | <FLOAT> { System.out.println("Reconheceu FLOAT"); }
-        | <float_constant> { System.out.println("Reconheceu FLOAT VALUE"); }
-        | <BOOLEAN> { System.out.println("Reconheceu BOOLEAN"); }
-        | <boolean_constant> { System.out.println("Reconheceu BOOLEAN VALUE"); }
-        | <CHAR> { System.out.println("Reconheceu CHAR"); }
-        | <char_constant > { System.out.println("Reconheceu CHAR VALUE"); }
-        | <NOT> { System.out.println("Reconheceu NOT"); }
-        | <AND> { System.out.println("Reconheceu AND"); }
-        | <OR> { System.out.println("Reconheceu OR"); }
-        | <XOR> { System.out.println("Reconheceu XOR"); }
-        | <INTEGER> { System.out.println("Reconheceu INTEGER"); }
-        | <integer_constant> { System.out.println("Reconheceu NUMERO INTEIRO"); }
-        | <LPAREN> { System.out.println("Reconheceu ABRE PARENTES"); }
-        | <RPAREN> { System.out.println("Reconheceu FECHA PARENTES"); }
-        | <ASSIGN> { System.out.println("Reconheceu OPERADOR IGUAL"); }
-        | <GT> { System.out.println("Reconheceu OPERADOR MAIOR QUE"); }
-        | <LT> { System.out.println("Reconheceu OPERADOR MENOR QUE"); }
-        | <EQ> { System.out.println("Reconheceu OPERADOR IGUAL"); }
-        | <LE> { System.out.println("Reconheceu OPERADOR MENOR IGUAL QUE"); }
-        | <GE> { System.out.println("Reconheceu OPERADOR MENOR IGUAL QUE"); }
-        | <NEQ> { System.out.println("Reconheceu OPERADOR DIFERENTE DE "); }
-        | <REM> { System.out.println("Reconheceu OPERADOR PORCENTO"); }
-        | <LBRACE> { System.out.println("Reconheceu ABRE CHAVES"); }
-        | <RBRACE> { System.out.println("Reconheceu FECHA CHAVES"); }
-        | <LBRACKET> { System.out.println("Reconheceu ABRE COLCHETES"); }
-        | <RBRACKET> { System.out.println("Reconheceu FECHA COLCHETES"); }
-        | <SEMICOLON> { System.out.println("Reconheceu PONTO E VIRGULA"); }
-        | <COMMA> { System.out.println("Reconheceu VIRGULA "); }
-        | <DOT> { System.out.println("Reconheceu PONTO"); }
-        | <STRING> { System.out.println("Reconheceu STRING"); }
-        | <string_constant> { System.out.println("Reconheceu STRING VALUE"); }
-    )*
+    [ classlist() ] <EOF>
 }
