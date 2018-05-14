@@ -508,13 +508,19 @@ void xorexpr():
 void andexpr():
 {}
 {
-	unaryexpr() (<AND> unaryexpr())*
+	notexpr() (<AND> notexpr())*
+}
+
+void notexpr():
+{}
+{
+	[(<NOT>)] unaryexpr()
 }
 
 void unaryexpr():
 {}
 {
-    [(<PLUS> | <MINUS> | <NOT>)] factor()
+    [(<PLUS> | <MINUS>)] factor()
 }
 
 void factor():
