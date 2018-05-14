@@ -468,6 +468,44 @@ void alocexpression():
           )
 }
 
+void expression():
+{}
+{
+    numexpr() [( <LT> | <GT> | <LE> | <GE> | <EQ> | <NEQ> ) numexpr()]
+}
+
+void numexpr():
+{}
+{
+    term() ((<PLUS> | <MINUS> ) term())*
+}
+
+void term():
+{}
+{
+    unaryexpr() ((<STAR> | <SLASH> | <REM> ) unaryexpr())*
+}
+
+void unaryexpr():
+{}
+{
+    [(<PLUS> | <MINUS>)] factor()
+}
+
+void factor():
+{}
+{
+    (
+        <int_constant> | <string_constant> | <null_constant> | lvalue() | <LPAREN> expression() <RPAREN>
+    )
+}
+
+void arglist():
+{}
+{
+    [expression() (<COMMA> expression()) *]
+}
+
 void program() :
 {}
 {
