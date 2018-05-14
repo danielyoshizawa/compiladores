@@ -246,6 +246,8 @@ TOKEN :
 | < #VALIDSYMBOLS : ["a"-"z", "A"-"Z", "0"-"9", "(", ")",
                      "[", "]", "{", "}", ";", ",", ".", "=",
                      ">", "<", "!", "+", "-", "*", "/", "%", " ", "$", "^"] >
+| < CLASS : ( "class" ) >
+| <EXTENDS : ( "extends" ) >
 }
 
 // Item 2
@@ -313,6 +315,157 @@ SPECIAL_TOKEN :
         System.err.println("Line " + input_stream.getEndLine() + " Character invalido " + image);
         countLexError++;
      }
+}
+
+void classlist():
+{
+}
+{
+    classdecl() [ classlist() ]
+}
+
+void classdecl():
+{
+}
+{
+    <CLASS> <IDENT> [ <EXTENDS> <IDENT> ] classbody()
+}
+
+void classbody():
+{
+}
+{
+    <LBRACE>
+        [classlist()]
+        (LOOKAHEAD(3) vardecl() <SEMICOLON>)*
+        (contructdecl())*
+        (methoddecl())*
+    <RBRACE>
+}
+
+void vardecl():
+{}
+{
+    (<INT> | <STRING> | <IDENT> )
+    <IDENT> ( <LBRACKET> <RBRACKET> ) *
+    (<COMMA> <IDENT> ( <RBRACKET> <LBRACKET>)* )*
+}
+
+void constructdecl():
+{}
+{
+    <CONSTRUCTOR> methodbody()
+}
+
+void methoddecl():
+{}
+{
+    ( <INT> | <STRING> | <IDENT> ) (<RBRACKET> <LBRACKET>)*
+    <IDENT> methodbody()
+}
+
+void methodbody():
+{}
+{
+    <LPAREN> paramlist() <RPAREN> statement()
+}
+
+void paramlist():
+{}
+{
+    [
+        ( <INT> | <STRING> | <IDENT> ) <IDENT> (<RBRACKET> <LBRACKET>) *
+        ( <COMMA> ( <INT> | <STRING> | <IDENT> )
+        <IDENT> (<RBRACKET> <LBRACKET>)* )*
+    ]
+}
+
+void statement():
+{}
+{
+    LOOKAHEAD(2)
+    vardecl()
+    | atribstat() <SEMICOLON>
+    | printstat() <SEMICOLON>
+    | readstat() <SEMICOLON>
+    | returnstat() <SEMICOLON>
+    | superstat() <SEMICOLON>
+    | ifstat() <SEMICOLON>
+    | forstat() <SEMICOLON>
+    | <LBRACE> statlist() <RBRACE>
+    | <BREAK> <SEMICOLON>
+    | <SEMICOLON>
+}
+
+void atribstat():
+{}
+{
+    lvalue() <ASSIGN> ( alocexpression() | expression() )
+}
+
+void printstat():
+{}
+{
+    <PRINT> expression()
+}
+
+void readstat():
+{}
+{
+    <READ> lvalue()
+}
+
+void returnstat():
+{}
+{
+    <RETURN> [expression()]
+}
+
+void superstat():
+{}
+{
+    <SUPER> <LPAREN> arglist() <RPAREN>
+}
+
+void ifstat():
+{}
+{
+    <IF> <LPAREN> expression() <RPAREN> statement()
+    [LOOKAHEAD(1) <ELSE> statement() ]
+}
+
+void forstat():
+{}
+{
+    <FOR> <LPAREN> [atribstat()] <SEMICOLON>
+                    [expression()] <SEMICOLON>
+                    [atribstat()] <RPAREN>
+                    statement()
+}
+
+void statlist():
+{}
+{
+    statement() [statlist()]
+}
+
+void lvalue():
+{}
+{
+    <IDENT> (
+                <LBRACKET> expression() <RBRACKET> |
+                <DOT> <IDENT> [<LPAREN> arglist() <RPAREN>]
+            )*
+}
+
+void alocexpression():
+{}
+{
+    <NEW> (
+            LOOKAHEAD(2) <IDENT> <LPAREN> arglist() <RPAREN> |
+            ( <INT> |  <STRING> | <IDENT> )
+            ( <LBRACKET> expression() <RBRACKET> )+
+          )
 }
 
 void program() :
