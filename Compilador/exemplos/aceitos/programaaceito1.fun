@@ -6,7 +6,7 @@ class analisador
 class analisadorsintatico extends analisador
 {
     int inteiro;
-    string palavra, frases;
+    string palavra;
     char a[];
 
     constructor (string str)
@@ -21,20 +21,20 @@ class analisadorsintatico extends analisador
         return palavra;
     }
 
-    void ifElseTest(int inteiroParam)
+    string ifElseTest(int inteiroParam)
     {
         if ( inteiroParam > inteiro )
             print "Inteiro maior que 10";
         else
-            print "Inteiro menor que 10";
+            print "Inteiro menor que 10";;
     }
 
     int forTest(int loopCount)
     {
-        for(int i = 0; i < loopCount; i++)
+        for(i = 0; i < loopCount; i = 1 + 1)
         {
             print i;
-        }
+        };
     }
 
     int emptyMethodTest(string empty)
@@ -42,10 +42,10 @@ class analisadorsintatico extends analisador
         ;
     }
 
-    void newTest(int param)
+    string newTest(int param)
     {
-        mytype type = new mytype(10 * param);
-        new string[10][a][b];
+        mytype type;
+        type = new mytype(10 * param);
     }
 
 }
