@@ -13,7 +13,7 @@ class item3C
         ;
     }
 
-    string initTest(int a, int b, int c = 0)
+    string initTest(int a, int b, int c)
     {
        string = "abc123";
     }

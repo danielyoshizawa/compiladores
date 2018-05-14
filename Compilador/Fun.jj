@@ -387,9 +387,11 @@ void paramlist():
 {}
 {
     [
-        ( <INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> ) <IDENT> (<RBRACKET> <LBRACKET>)*
+        ( <INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> ) <IDENT>
+		[<ASSIGN> expression()]
+		(<RBRACKET> <LBRACKET>)*
         ( <COMMA> ( <INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> )
-        <IDENT> (<RBRACKET> <LBRACKET>)* )*
+        <IDENT> [<ASSIGN> expression()] (<RBRACKET> <LBRACKET>)* )*
     ]
 }
 

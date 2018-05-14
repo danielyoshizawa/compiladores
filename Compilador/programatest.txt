@@ -7,11 +7,13 @@ class analisadorsintatico extends analisador
 {
     int inteiro = 1;
 	float a = 1 + 1;
+	float a;
     string palavra, frases;
     char a[];
 
-    string returnSomething()
+    string returnSomething(int a, int c = 2)
     {
+		b = true;
         return palavra;
     }
 	
