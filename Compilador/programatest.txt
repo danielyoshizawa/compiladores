@@ -47,7 +47,14 @@ class analisadorsintatico extends analisador
     {
         mytype type;
 		type = new mytype(10 * param);
-		resultado = (5 OR 7) + 5;
+		resultado = (5 OR 7) > 5;
+    }
+	
+	char retornaChar(char c)
+    {
+		teste = 1 + 1;
+        var = ((a >= 3) and ((b <= 321+4) or (true)));
+        return 'c';
     }
 
 }

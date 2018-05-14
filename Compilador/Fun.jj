@@ -484,7 +484,7 @@ void alocexpression():
 void expression():
 {}
 {
-    numexpr() [( <LT> | <GT> | <LE> | <GE> | <EQ> | <NEQ> | <NOT> | <AND> | <OR> | <XOR> ) numexpr()]
+    numexpr() [( <LT> | <GT> | <LE> | <GE> | <EQ> | <NEQ> ) numexpr()]
 }
 
 void numexpr():
@@ -496,7 +496,25 @@ void numexpr():
 void term():
 {}
 {
-    unaryexpr() ((<MULTIPLY> | <DIVIDE> | <REM> ) unaryexpr())*
+    xorexpr() ((<MULTIPLY> | <DIVIDE> | <REM> ) xorexpr())*
+}
+
+void xorexpr():
+{}
+{
+	andexpr() ((<XOR> | <OR> ) andexpr())*
+}
+
+void andexpr():
+{}
+{
+	notexpr() (<AND> notexpr())*
+}
+
+void notexpr():
+{}
+{
+	unaryexpr() ((<NOT> ) unaryexpr())*
 }
 
 void unaryexpr():
