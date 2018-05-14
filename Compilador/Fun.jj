@@ -502,25 +502,19 @@ void term():
 void xorexpr():
 {}
 {
-	andexpr() ((<XOR> | <OR> ) andexpr())*
+	andexpr() ((<XOR> | <OR>) andexpr())*
 }
 
 void andexpr():
 {}
 {
-	notexpr() (<AND> notexpr())*
-}
-
-void notexpr():
-{}
-{
-	unaryexpr() ((<NOT> ) unaryexpr())*
+	unaryexpr() (<AND> unaryexpr())*
 }
 
 void unaryexpr():
 {}
 {
-    [(<PLUS> | <MINUS>)] factor()
+    [(<PLUS> | <MINUS> | <NOT>)] factor()
 }
 
 void factor():

@@ -53,7 +53,8 @@ class analisadorsintatico extends analisador
 	char retornaChar(char c)
     {
 		teste = 1 + 1;
-        var = ((a >= 3) and ((b <= 321+4) or (true)));
+		teste = (5+5) + 3;
+        var = not((a >= 3) and ((b <= 321+4) or (true)));
         return 'c';
     }
 
