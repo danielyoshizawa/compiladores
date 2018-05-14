@@ -4,9 +4,7 @@ class item3C
     float a;
     float a = 1 + 1;
     boolean b;
-    b = true;
     char c;
-    c = 'a';
 
     constructor (string palavra)
     {
@@ -15,6 +13,6 @@ class item3C
 
     string initTest(int a, int b, int c)
     {
-       string = "abc123";
+       string a = "abc123";
     }
 }
