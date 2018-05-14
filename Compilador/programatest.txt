@@ -1,9 +1,53 @@
-class Teste
+class analisador
 {
-	boolean varBool;
-	integer varInteiro;
-	
-	constructor() varBool = true;
-	
-	boolean ehBoolean() read arquivoloco;
+
+}
+
+class analisadorsintatico extends analisador
+{
+    int inteiro;
+    string palavra, frases;
+    char a[];
+
+    constructor (string str)
+    {
+        inteiro = 10;
+        palavra = str;
+        print palavra;
+    }
+
+    string returnSomething()
+    {
+        return palavra;
+    }
+
+    int ifElseTest(int inteiroParam)
+    {
+        if ( inteiroParam > inteiro )
+            print "Inteiro maior que 10";
+        else
+            print "Inteiro menor que 10";
+		;
+    }
+
+    int forTest(int loopCount)
+    {
+        for(i = 0; i < loopCount; i = 1+1)
+        {
+            print i;
+        };
+    }
+
+    int emptyMethodTest(string empty)
+    {
+        ;
+    }
+
+    int newTest(int param)
+    {
+        mytype type;
+		type = new mytype(10 * param);
+		resultado = (5 OR 7) + 5;
+    }
+
 }

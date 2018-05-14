@@ -484,7 +484,7 @@ void alocexpression():
 void expression():
 {}
 {
-    numexpr() [( <LT> | <GT> | <LE> | <GE> | <EQ> | <NEQ> ) numexpr()]
+    numexpr() [( <LT> | <GT> | <LE> | <GE> | <EQ> | <NEQ> | <NOT> | <AND> | <OR> | <XOR> ) numexpr()]
 }
 
 void numexpr():
