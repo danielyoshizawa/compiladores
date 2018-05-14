@@ -5,20 +5,21 @@ class analisador
 
 class analisadorsintatico extends analisador
 {
-    int inteiro;
+    int inteiro = 1;
+	float a = 1 + 1;
     string palavra, frases;
     char a[];
-
-    constructor (string str)
-    {
-        inteiro = 10;
-        palavra = str;
-        print palavra;
-    }
 
     string returnSomething()
     {
         return palavra;
+    }
+	
+	constructor (string str)
+    {
+        inteiro = 10;
+        palavra = str;
+        print palavra;
     }
 
     int ifElseTest(int inteiroParam)
@@ -52,6 +53,7 @@ class analisadorsintatico extends analisador
 	
 	char retornaChar(char c)
     {
+		boolean teste = true;
 		teste = 1 + 1;
 		teste = (5+5) + 3;
         var = not((a >= 3) and ((b <= 321+4) or (true)));
