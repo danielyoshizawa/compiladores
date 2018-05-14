@@ -1,0 +1,9 @@
+class Teste
+{
+	boolean varBool;
+	integer varInteiro;
+	
+	constructor() varBool = true;
+	
+	boolean ehBoolean() read arquivoloco;
+}

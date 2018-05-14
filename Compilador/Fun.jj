@@ -508,7 +508,7 @@ void factor():
 {}
 {
     (
-        <integer_constant> | <string_constant> | <null_constant> | lvalue() | <LPAREN> expression() <RPAREN>
+        <integer_constant> | <string_constant> | <null_constant> | <boolean_constant> | <char_constant> | <float_constant> | lvalue() | <LPAREN> expression() <RPAREN>
     )
 }
 
