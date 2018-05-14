@@ -1,3 +1,4 @@
+// Teste para a sintaxe base do programa
 class analisador
 {
 

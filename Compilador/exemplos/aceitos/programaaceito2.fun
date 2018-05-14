@@ -1,4 +1,5 @@
-class item3
+// Teste para o item 3.a
+class item3A
 {
     float a;
     boolean b;
@@ -9,7 +10,7 @@ class item3
         ;
     }
 
-    float retornaFloar(float f)
+    float retornaFloat(float f)
     {
         return 1.0;
     }
