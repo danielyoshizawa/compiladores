@@ -1,0 +1,343 @@
+% abtex2-modelo-artigo.tex, v-1.9.2 laurocesar
+% Copyright 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/ 
+%
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% abnTeX2: Modelo de Artigo Acadêmico em conformidade com
+% ABNT NBR 6022:2003: Informação e documentação - Artigo em publicação 
+% periódica científica impressa - Apresentação
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	11pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE % títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	portuguese,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+	]{abntex2}
+
+
+% ---
+% PACOTES
+% ---
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{nomencl} 			% Lista de simbolos
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{dpfloat, booktabs}
+% ---
+\graphicspath{ {images/} }		
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+% ---
+\usepackage{lipsum}				% para geração de dummy text
+% ---
+		
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+% ---
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Introdução a Compiladores - Trabalho 2 }
+\autor{Daniel Yoshizawa (13101269)\\Guilherme Nunes (13103611)\\Larissa Taw (14209793)\\Mayse Espíndola (11204360) }
+\local{Florianópolis, SC,  Brasil}
+\data{25 de abril de 2018}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={Modelo de artigo científico com abnTeX2},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{atigo científico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ---
+% Altera as margens padrões
+% ---
+\setlrmarginsandblock{3cm}{3cm}{*}
+\setulmarginsandblock{3cm}{3cm}{*}
+\checkandfixthelayout
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+\setlength{\parskip}{0.2cm}
+
+\SingleSpacing
+
+\begin{document}
+
+\frenchspacing 
+
+\maketitle
+
+\begin{resumoumacoluna}
+Criação de um analisador sintático utilizando a ferramenta de geração de código Javacc para a disciplina de Introdução a compiladores, neste documento
+são apresentadas as dificuldades encontradas para a geração do analisador sintático assim como a tabela de \textit{outputs} para os arquivos de código fonte analisados e a explicação
+da solução dos items A,B,C e D do exercício 3.
+
+ \vspace{\onelineskip}
+ 
+ \noindent
+ \textbf{Palavras-chaves}: Introdução a Compiladores, Javacc, Fun, Analisador Sintático
+\end{resumoumacoluna}
+
+\newpage
+\tableofcontents*
+\newpage
+
+\textual
+\section{Descrição das atividade}
+
+Foi construído um analisador sintático para a linguagem de programação Fun, proposta na disciplina de Introdução a compiladores, baseada em Java e utilizando a 
+ferramenta Javacc para geração de código.
+
+Nesse trabalho foram definidas as regras de analise sintática seguindo as sessões 2.3, 2,4 e 2,5 do livro \textit{Como Construir um Compilador Utilizando Ferramentas Java}, assim como a criação de arquivos fontes para programas compilados na linguagem que estamos desenvolvendo, com a finalidade de testar a integridade e funcionalidades inseridas no compilador, foram feitos programas que devem ser aceitos e que não devem ser aceitos pelo compilador.
+ 
+
+\section{Dificuldades encontradas}
+
+Durante o desenvolvimento deste trabalho encontramos algumas dificuldades que foram logo superadas com o material de apoio e trabalho em grupo, entre elas determinar as expressões que seriam avaliadas para aceitar os operadores lógicos, tanto em relação a utilização de parênteses como ordem de precedência, porem após analise optamos pela solução apresentada no trabalho.
+
+Como já possuímos alguma familiaridade com a ferramenta \textbf{JavaCC} e o conteúdo deste trabalho é de maior conhecimento da equipe, a execução dessa atividade foi um pouco mais fácil que ao trabalho anterior portanto não temos muitas dificuldades a apresentar.
+
+\section{Soluções aplicadas}
+
+Para definir as regras da linguagem nos baseamos em linguagens de programação já consagradas, como Java e C++, seguindo algumas das regras utilizadas por estas
+linguagens, assim como soluções que foram discutidas em grupo para chegar a uma solução interessante para o fim deste trabalho.
+
+Com o auxilio do livro base e da documentação da ferramenta foi possível  sanar a maioria das nossas duvidas em relação ao Javacc e com o material e explicações das aulas
+pudemos criar as expressões regulares que julgamos mais adequadas a solução do problema.
+
+\section{Solução do item 3}
+
+\subsection{3.a}
+
+Criamos os novos tokens dos novos tipos, \textbf{float}, \textbf{boolean} e \textbf{char}, então verificamos onde cada outro tipo era utilizado em declarações e expressões e acrescentamos no \textbf{REGEX} as opções de novos tokens.
+
+\subsection{3.b}
+
+Foi verificado onde era executado a soma, divisão etc, visto que os métodos se chamavam na ordem de precedência foi acrescentado os novos operadores lógicos, not, and, or e xor,  com a ordem de acordo com o enunciado, depois fizemos o not ficar mais a esquerda.
+
+\subsection{3.c}
+
+Verificamos onde as variáveis eram inicializadas, função \textit{vardecl()} e acrescentamos o <ASSIGN>, sendo que toda vez que tiver um <ASSIGN> obrigatoriamente tem que ter uma expressão depois.
+
+Depois foi acrescido a verificação na lista de parâmetros e dentro de métodos.
+
+\subsection{3.d}
+
+Havia na ordem \textit{x} ou mais construtores e depois \textit{x} ou mais métodos, alteramos pra ter \textit{x} ou mais métodos ou construtores, podendo assim ser em qualquer ordem.
+
+\newpage
+\section{Tabela de tokens}
+
+Abaixo são apresentadas as tabelas com os programs testados, aceitos e negados assim como o output gerado pelo analisador sintático.
+
+\subsection{Aceitos}
+
+\begin{center}
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Arquivo & Output \\
+\hline
+"programaaceito1.fun" & "O programa foi corretamente analisado" \\
+"programaaceito2.fun" & "O programa foi corretamente analisado" \\
+"programaaceito3.fun" & "O programa foi corretamente analisado" \\
+"programaaceito4.fun" & "O programa foi corretamente analisado" \\ \hline
+\end{tabularx}
+\end{table}
+\end{center}
+
+\subsection{Negados}
+
+\begin{center}
+\begin{table}[H]
+\begin{tabularx}{1\textwidth}{p{5cm}|X}
+Arquivo & Output \\
+\hline
+programanaoaceito1.fun & Encountered '' ''class'' ''class '''' at line 1, column 35. Was expecting: <IDENT> ... \\
+programanaoaceito2.fun & Encountered '' ''boolean'' ''boolean '''' at line 3, column 21. Was expecting:''('' ... \\
+programanaoaceito3.fun &  Encountered '' ''int'' ''int '''' at line 4, column 6. Was expecting one of: '']'' ... <IDENT> ... \\
+programanaoaceito4.fun &  Encountered '' ''='' ''= '''' at line 5, column 9. Was expecting one of: '']'' ... <IDENT> ...\\
+programanaoaceito5.fun &  Encountered '' '')'' '') '''' at line 5, column 21. Was expecting one of: <IDENT> ...\\
+programanaoaceito6.fun &  Encountered '' <NOT> ''not '''' at line 5, column 18. Was expecting one of: \
+    ''+'' ... \
+    ''-'' ... \
+    ''*'' ... \
+    ''/'' ... \
+    <AND> ... \
+    <OR> ... \ 
+    <XOR> ... \ 
+    ''>'' ... \ 
+    ''<'' ... \
+    ''=='' ... \ 
+    ''<='' ... \ 
+    ''>='' ... \ 
+    <NEQ> ...\ 
+    ''\%'' ... \
+    '')'' ...\\
+programanaoaceito7.fun & Encountered '' '')'' '') '''' at line 5, column 31. Was expecting one of: \
+    ''+'' ... \
+    ''-'' ... \
+    <NOT> ... \
+    ''('' ... \
+    <float\_constant> ... \
+    <integer\_constant> ... \
+    <boolean\_constant> ... \
+    <char\_constant> ... \
+    <string\_constant> ... \
+    ''null'' ... \
+    <IDENT> ... \\
+programanaoaceito8.fun & Encountered " <AND> "and "" at line 5, column 37. Was expecting one of:\
+    "+" ...\
+    "-" ...\
+    <NOT> ...\
+    "(" ...\
+    <float\_constant> ...\
+    <integer\_constant> ...\
+    <boolean\_constant> ...\
+    <char\_constant> ...\
+    <string\_constant> ...\
+    "null" ...\
+    <IDENT> ... \\
+programanaoaceito9.fun & Encountered " ")" ") "" at line 5, column 21. Was expecting one of:\
+    "+" ...\
+    "-" ...\
+    <NOT> ...\
+    "(" ...\
+    <float\_constant> ...\
+    <integer\_constant> ...\
+    <boolean\_constant> ...\
+    <char\_constant> ...\
+    <string\_constant> ...\
+    "null" ...\
+    <IDENT> ...\\
+programanaoaceito10.fun & Encountered " <NOT> "not "" at line 5, column 19. Was expecting one of:\
+    "+" ... \
+    "-" ... \
+    "*" ... \
+    "/" ...\
+    <AND> ...\
+    <OR> ...\
+    <XOR> ...\
+    ">" ...\
+    "<" ...\
+    "==" ...\
+    "<=" ...\
+    ">=" ...\
+    <NEQ> ...\
+    "\%" ...\
+    "float" ...\
+    "boolean" ...\
+    "char" ...\
+    "string" ...\
+    "int" ...\
+    "break" ...\
+    "print" ...\
+    "read" ...\
+    "return" ...\
+    "super" ...\
+    "if" ...\
+    "for" ...\
+    "\{" ...\
+    "\}" ...\
+    ";" ...\
+    <IDENT> ... \\
+programanaoaceito11.fun & Encountered '' ''='' ''= '''' at line 3, column 26. Was expecting one of: <IDENT> ...  \\
+programanaoaceito12.fun & Encountered " <string\_constant> "\"aaaa\" "" at line 3, column 37. Was expecting one of:\
+    "=" ...\
+    ")" ...\
+    "]" ...\
+    "," ...\\ \hline
+\end{tabularx}
+\end{table}
+\end{center}
+
+\newpage
+\section{Conclusão}
+
+Com esse trabalhos conseguimos compreender melhor o funcionamento de um analisador sintático assim como o entendimento do uso da ferramenta Javacc para criação de um compilador.
+
+Com o presente concluímos a segunda etapa da série de trabalhos da disciplina com o intuito final de construir todas as etapas de um compilador, gerando assim uma linguagem de programação que possa ser compilada utilizando o material gerado nestes trabalhos.
+
+\bookmarksetup{startatroot}
+\end{document}
