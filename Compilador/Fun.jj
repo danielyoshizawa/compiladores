@@ -358,7 +358,7 @@ void classbody():
 void vardecl():
 {}
 {
-    (<INTEGER> | <STRING> | <IDENT> )
+    (<INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> )
     <IDENT> ( <LBRACKET> <RBRACKET> ) *
     (<COMMA> <IDENT> ( <RBRACKET> <LBRACKET>)* )*
 }
@@ -372,7 +372,7 @@ void constructdecl():
 void methoddecl():
 {}
 {
-    ( <INTEGER> | <STRING> | <IDENT> ) (<RBRACKET> <LBRACKET>)*
+    ( <INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> ) (<RBRACKET> <LBRACKET>)*
     <IDENT> methodbody()
 }
 
@@ -386,8 +386,8 @@ void paramlist():
 {}
 {
     [
-        ( <INTEGER> | <STRING> | <IDENT> ) <IDENT> (<RBRACKET> <LBRACKET>) *
-        ( <COMMA> ( <INTEGER> | <STRING> | <IDENT> )
+        ( <INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> ) <IDENT> (<RBRACKET> <LBRACKET>) *
+        ( <COMMA> ( <INTEGER> | <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> )
         <IDENT> (<RBRACKET> <LBRACKET>)* )*
     ]
 }
@@ -475,7 +475,7 @@ void alocexpression():
 {
     <NEW> (
             LOOKAHEAD(2) <IDENT> <LPAREN> arglist() <RPAREN> |
-            ( <INTEGER> |  <STRING> | <IDENT> )
+            ( <INTEGER> |  <STRING> | <FLOAT> | <CHAR> | <BOOLEAN> | <IDENT> )
             ( <LBRACKET> expression() <RBRACKET> )+
           )
 }
