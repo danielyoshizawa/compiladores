@@ -207,6 +207,19 @@ TOKEN :
 | < CHAR : "char" >
 | < STRING : "string" >
 | < INTEGER : "int" >
+| < BREAK : "break" >
+| < PRINT : "print" >
+| < READ : "read" >
+| < RETURN : "return" >
+| < SUPER : "super" >
+| < IF : "if" >
+| < ELSE : "else" >
+| < FOR : "for" >
+| < NEW : "new" >
+| < FLUSH : "flush" >
+| < CONSTRUCTOR : "constructor" >
+| < CLASS : ( "class" ) >
+| < EXTENDS : ( "extends" ) >
 }
 
 TOKEN :
@@ -235,6 +248,7 @@ TOKEN :
                         | ["0"-"9"] | <VALIDSYMBOLS>
                         | ("\\""t") | ("\\""f") | ("\'")
                         )+ "\"" >
+    | < null_constant : "null" >
 }
 
 TOKEN :
@@ -246,8 +260,6 @@ TOKEN :
 | < #VALIDSYMBOLS : ["a"-"z", "A"-"Z", "0"-"9", "(", ")",
                      "[", "]", "{", "}", ";", ",", ".", "=",
                      ">", "<", "!", "+", "-", "*", "/", "%", " ", "$", "^"] >
-| < CLASS : ( "class" ) >
-| <EXTENDS : ( "extends" ) >
 }
 
 // Item 2
@@ -338,7 +350,7 @@ void classbody():
     <LBRACE>
         [classlist()]
         (LOOKAHEAD(3) vardecl() <SEMICOLON>)*
-        (contructdecl())*
+        (constructdecl())*
         (methoddecl())*
     <RBRACE>
 }
@@ -346,7 +358,7 @@ void classbody():
 void vardecl():
 {}
 {
-    (<INT> | <STRING> | <IDENT> )
+    (<INTEGER> | <STRING> | <IDENT> )
     <IDENT> ( <LBRACKET> <RBRACKET> ) *
     (<COMMA> <IDENT> ( <RBRACKET> <LBRACKET>)* )*
 }
@@ -360,7 +372,7 @@ void constructdecl():
 void methoddecl():
 {}
 {
-    ( <INT> | <STRING> | <IDENT> ) (<RBRACKET> <LBRACKET>)*
+    ( <INTEGER> | <STRING> | <IDENT> ) (<RBRACKET> <LBRACKET>)*
     <IDENT> methodbody()
 }
 
@@ -374,8 +386,8 @@ void paramlist():
 {}
 {
     [
-        ( <INT> | <STRING> | <IDENT> ) <IDENT> (<RBRACKET> <LBRACKET>) *
-        ( <COMMA> ( <INT> | <STRING> | <IDENT> )
+        ( <INTEGER> | <STRING> | <IDENT> ) <IDENT> (<RBRACKET> <LBRACKET>) *
+        ( <COMMA> ( <INTEGER> | <STRING> | <IDENT> )
         <IDENT> (<RBRACKET> <LBRACKET>)* )*
     ]
 }
@@ -463,7 +475,7 @@ void alocexpression():
 {
     <NEW> (
             LOOKAHEAD(2) <IDENT> <LPAREN> arglist() <RPAREN> |
-            ( <INT> |  <STRING> | <IDENT> )
+            ( <INTEGER> |  <STRING> | <IDENT> )
             ( <LBRACKET> expression() <RBRACKET> )+
           )
 }
@@ -483,7 +495,7 @@ void numexpr():
 void term():
 {}
 {
-    unaryexpr() ((<STAR> | <SLASH> | <REM> ) unaryexpr())*
+    unaryexpr() ((<MULTIPLY> | <DIVIDE> | <REM> ) unaryexpr())*
 }
 
 void unaryexpr():
@@ -496,7 +508,7 @@ void factor():
 {}
 {
     (
-        <int_constant> | <string_constant> | <null_constant> | lvalue() | <LPAREN> expression() <RPAREN>
+        <integer_constant> | <string_constant> | <null_constant> | lvalue() | <LPAREN> expression() <RPAREN>
     )
 }
 
