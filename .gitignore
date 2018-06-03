@@ -1,4 +1,3 @@
-*.java
 *.class
 *.idea
 *.aux
@@ -10,3 +9,12 @@
 *.idx
 Enviar/
 Enviar/*
+Compilador/Fun.java
+Compilador/FunConstants.java
+Compilador/FunTokenManager.java
+Compilador/ParseException.java
+Compilador/SimpleCharStream.java
+Compilador/Token.java
+Compilador/TokenMgrError.java
+Compilador/test.txt
+Compilador/test_aceitos.txt
