@@ -96,16 +96,19 @@ public class Fun
                 // incrementa parser.contParseError.
                 try
                 {
+
                     parser.program();
+
                 }
-                catch (ParseException ex)
+                catch (ParseEOFException ex)
                 {
                     System.err.println(ex.getMessage());
                     parser.contParseError = 1;
-                } finally
+                }
+                finally
                 {
                     lexError(lexical_error_msg, parser.token_source.foundLexError());
-                    System.out.println(parser.contParseError + " Syntatic Error Found");
+                    System.out.println(parser.contParseError + " Erro sintatico encontrado");
                 }
             }
             catch (java.io.FileNotFoundException e)
@@ -150,49 +153,31 @@ public class Fun
       }
   }
 
-    boolean eof;
+boolean eof;
 
-    void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFException, ParseException
-    {
-        Token tok;
+void consumeUntil(RecoverySet g, ParseException e, String met) throws ParseEOFException, ParseException
+{
+  	Token tok;
 
-        System.out.println();
-        System.out.println("*** " + met + " ***");
-        System.out.println("   Syncronizing Set: " + g);
+	if (g==null)
+	    throw e;
+	tok = getToken(1);
 
-        if (g==null)
-        {
-            throw e;
-        }
+	while (!eof) {
+	  if (g.contains(tok.kind)) {
+	    break;
+	  }
+	  getNextToken();
+	  tok = getToken(1);
+	  if (tok.kind == EOF && ! g.contains(EOF) )
+	  	eof = true;
+	  }
+	System.out.println(e.getMessage());
+	contParseError++;
+	if ( eof )
+	 throw new ParseEOFException("EOF found prematurely.");
+}
 
-        tok = getToken(1);
-
-        while (!eof)
-        {
-            if (g.contains(tok.kind))
-            {
-                System.out.println("Found syncronizing token: " + im(tok.kind));
-                break;
-            }
-
-            System.out.println("Ignoring token: " + im(tok.kind));
-
-            getNextToken();
-            tok = getToken(1);
-            if (tok.kind == EOF && ! g.contains(EOF) )
-            {
-                eof = true;
-            }
-
-        }
-        System.out.println(e.getMessage());
-        contParseError++;
-
-        if ( eof )
-        {
-            throw new ParseEOFException("EOF found prematurely.");
-        }
-    }
 }
 PARSER_END(Fun)
 
