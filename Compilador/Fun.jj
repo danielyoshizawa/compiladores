@@ -480,7 +480,7 @@ ListNode l = null;
 }
 {
 try {
-   ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT> )
+   ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT> | t1 = <FLOAT> | t1 = <CHAR> | t1 = <BOOLEAN> )
    t2 = <IDENT> ( <LBRACKET> <RBRACKET> { k++; } )*
      { l = new ListNode(new VarNode(t2, k)); }
    (<COMMA> { k = 0; }  t2 = <IDENT> ( <LBRACKET> <RBRACKET> { k++; })*
@@ -522,7 +522,7 @@ MethodBodyNode m = null;
 }
 {
 try {
-   ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT> )
+   ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT> | t1 = <FLOAT> | t1 = <CHAR> | t1 = <BOOLEAN> )
    (<LBRACKET> <RBRACKET> { k++; } )*
    t2 = <IDENT> m = methodbody(g)
       { return new MethodDeclNode(t1, k, t2, m); }
@@ -564,13 +564,15 @@ Token t2 = null;
 {
 try {
    [
-    ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT>) t2 = <IDENT>
+    ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT>
+    | t1 = <FLOAT> | t1 = <CHAR> | t1 = <BOOLEAN> ) t2 = <IDENT>
     (<LBRACKET> <RBRACKET> { k++; } )*
        {
          q = new ListNode(new VarNode(t2, k));
      p = new ListNode(new VarDeclNode(t1, q));
        }
-    (   <COMMA> {k = 0;}  ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT>)
+    (   <COMMA> {k = 0;}  ( t1 = <INTEGER> |  t1 = <STRING> | t1 = <IDENT>
+    | t1 = <FLOAT> | t1 = <CHAR> | t1 = <BOOLEAN> )
         t2= <IDENT> (<LBRACKET> <RBRACKET> {k ++;} )*
        {
          q = new ListNode(new VarNode(t2, k));
@@ -971,6 +973,12 @@ Token t;
        t = <string_constant> { e = new StringConstNode(t); }
     |
        t = <null_constant> { e = new NullConstNode(t); }
+    |
+       t = <boolean_constant> { e = new BooleanConstNode(t); }
+    |
+       t = <float_constant> { e = new FloatConstNode(t); }
+    |
+       t = <char_constant> { e = new CharConstNode(t); }
     |
        e = lvalue(null)
     |
