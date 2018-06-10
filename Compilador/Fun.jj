@@ -124,7 +124,7 @@ public class Fun
                         ClassCheck tc = new ClassCheck();
                         try {
                              tc.ClassCheckRoot(root);
-                             System.out.println("0 Semantic Errors found");
+                             System.out.println("0 erros semanticos encotrados");
                         }
                         catch (SemanticException e)
                         {
