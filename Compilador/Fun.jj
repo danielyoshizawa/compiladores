@@ -114,6 +114,12 @@ public class Fun
                     lexError(lexical_error_msg, parser.token_source.foundLexError());
                     System.out.println(parser.contParseError + " Erro sintatico encontrado");
                 }
+
+                if ( parser.token_source.foundLexError() + parser.contParseError == 0 )
+                    {
+                        PrintTree prt = new PrintTree();
+                        prt.printRoot(root);
+                    }
             }
             catch (java.io.FileNotFoundException e)
             {
@@ -536,7 +542,6 @@ catch (ParseException e)
    return new MethodBodyNode(t1, l, s);
 }
 }
-
 
 ListNode paramlist(RecoverySet g) throws ParseEOFException :
 {
