@@ -1,0 +1,660 @@
+% abtex2-modelo-artigo.tex, v-1.9.2 laurocesar
+% Copyright 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/ 
+%
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% abnTeX2: Modelo de Artigo Acadêmico em conformidade com
+% ABNT NBR 6022:2003: Informação e documentação - Artigo em publicação 
+% periódica científica impressa - Apresentação
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	11pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE % títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	portuguese,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+	]{abntex2}
+
+
+% ---
+% PACOTES
+% ---
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{nomencl} 			% Lista de simbolos
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{dpfloat, booktabs}
+% ---
+\graphicspath{ {images/} }		
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+% ---
+\usepackage{lipsum}				% para geração de dummy text
+% ---
+		
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+% ---
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Introdução a Compiladores - Trabalho 2 }
+\autor{Daniel Yoshizawa (13101269)\\Guilherme Nunes (13103611)\\Larissa Taw (14209793)\\Mayse Espíndola (11204360) }
+\local{Florianópolis, SC,  Brasil}
+\data{30 de maio de 2018}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={Modelo de artigo científico com abnTeX2},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{atigo científico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ---
+% Altera as margens padrões
+% ---
+\setlrmarginsandblock{3cm}{3cm}{*}
+\setulmarginsandblock{3cm}{3cm}{*}
+\checkandfixthelayout
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+\setlength{\parskip}{0.2cm}
+
+\SingleSpacing
+
+\begin{document}
+
+\frenchspacing 
+
+\maketitle
+
+\begin{resumoumacoluna}
+Criação de um analisador sintático utilizando a ferramenta de geração de código Javacc para a disciplina de Introdução a compiladores, neste documento
+são apresentadas as dificuldades encontradas para a geração do analisador sintático assim como a tabela de \textit{outputs} para os arquivos de código fonte analisados.
+
+ \vspace{\onelineskip}
+ 
+ \noindent
+ \textbf{Palavras-chaves}: Introdução a Compiladores, Javacc, Fun, Analisador Sintático
+\end{resumoumacoluna}
+
+\newpage
+\tableofcontents*
+\newpage
+\textual
+
+\section{Resumo seção 4.1}
+
+Analisador Sintático recebe do analisador léxico uma cadeia de tokens, os quais serão validados para verificar se essa cadeia poderá ser gerada pela gramática da linguagem fonte.
+
+Detectando erros de sintaxe nos tokens e a partir dos erros mais frequente ter a capacidade de recuperar-se deles, podendo assim continuar a análise do restante da entrada. 
+
+Os três tipos de analisador sintáticos existem são: 
+
+\begin{itemize}
+	\item Métodos universais de análise sintática: com capacidade de tratar qualquer gramática
+	\item Top-down: realiza a construção da árvore da raiz a para a folha. 
+	\item Bottom-up: realiza a construção da árvore da folha até atingir a raiz. 
+\end{itemize}
+
+Os métodos top-down e bottom-up são considerados mais eficientes que os métodos universais de análise sintática, e seu processo utiliza apenas determinadas subclasses de gramáticas, como LL e LR, as quais já são consideradas suficientemente expressivas para construção sintática das linguagens de programação. 
+
+Qualquer programa/código está passível a possuir erros de sintaxe, por mais atento e experiente que seja o programador que o desenvolveu, as linguagem de programação que deveriam auxiliar nessa validação de erro, não executam essa função, resto assim ao compilador executar a função de auxiliar de programador para localizar e identificar tais erros.  
+	
+A fase de análise sintática é responsável pela detecção e recuperação dos erros, devido a natureza do erro ser geralmente sintáticos e possuir um moderno e eficiente processo de detecção. Os erros detectados pelo analisador devem ser relatados de alguma forma, a mais comumente utilizada é a impressão da linha ilegal com um apontador para a posição na qual erro foi detectado. 
+
+Referente a tratamento de erros o analisador sintático possui determinadas metas a serem cumpridas:
+
+\begin{itemize}
+	\item Deve relatar a presença de erros clara e acuradamente;
+	\item Deve se recuperar de cada erro suficientemente rápido a fim de ser capaz de detectar erros subsequentes;
+	\item Não deve retardar significativamente o processamento de programas corretos. 
+\end{itemize}
+
+Após o erro detectado o analisador deverá tentar realizar a recuperação do mesmo, pois encerrar o processo logo após encontrar o primeiro erro poderá resultar na não detecção dos possíveis erros que a mesma entrada pode conter. Porém deve-se cuidar para que a recuperação não acabe resultando nas gerações de novos erros, os quais não foram gerados pelos programadores. Existe várias estratégia distinta que um analisador sintático poderá utilizar para recuperar-se de um erro e mesmo não existindo uma escolha universal algumas estratégias são utilizadas mais frequentemente. Tais como: 
+
+Recuperação na modalidade do desespero: é o mais simples de implementar e pode ser usado pela maioria dos métodos de análise sintática. Ao descobrir um erro, o analisador descarta símbolos de entrada, um de cada vez, até que seja encontrado um token pertencente a um conjunto designado de tokens de sincronização. Tal correção que frequentemente pula uma parte considerável da entrada sem verifica-la, procurando erros adicionais, possui vantagem da simplicidade e diferente dos demais métodos, tem a garantia de não entrar num laço infinito.  
+
+Recuperação de frase: ao descobrir um erro, o analisador pode realizar uma correção local a entrada restante, substituído um prefixo da entrada remanescente por alguma cadeia que permita ao analisador seguir em frente. Naturalmente, deve-se ser cuidadoso nas escolhas das substituições para que não gere um loop infinito. A vantagem desse método é que essas  substituições pode corrigir qualquer cadeia porém possui a desvantagem de apresentar dificuldade em lidar com situações nas quais os erros efetivos ocorrem antes do ponto de detecção.  
+
+Produções de erro: usa a gramática aumentada com produções de erros (erros comuns que ocorrem com frequência) para construir um analisador sintático. Gerando diagnóstico a partir das produções de erro utilizadas, para indicar as construções ilegais que foram reconhecidas na entrada. 
+
+Correção global: a partir de uma cadeia incorreta de entrada e uma gramática o método irá encontrar uma árvore gramatical para uma cadeia relacionada, de tal forma que as mudanças realizadas sejam as menores possíveis. Devido ao seu alto custo de implementação e espaço, esse método é voltado apenas a interesses teóricos.
+
+\section{Descrição das atividade}
+
+Foi construído um analisador sintático para a linguagem de programação Fun, proposta na disciplina de Introdução a compiladores, baseada em Java e utilizando a 
+ferramenta Javacc para geração de código.
+
+Neste trabalho foi criado o tratamento de erros para o analisador sintático, seguindo o \textbf{método do pânico} descrito no livro base, o tratamento de erros tenta alcançar o maior numero de erros de uma única vez tentando evitar que o mesmo código precise ser recompilado varias vezes para encontrar diversos erros que possam existir.
+ 
+\section{Dificuldades encontradas}
+
+Durante o desenvolvimento deste trabalho encontramos algumas dificuldades que foram logo superadas com o material de apoio e trabalho em grupo, entre elas determinar as expressões que seriam avaliadas para aceitar os operadores lógicos, tanto em relação a utilização de parênteses como ordem de precedência, porem após analise optamos pela solução apresentada no trabalho.
+
+Como já possuímos alguma familiaridade com a ferramenta \textbf{JavaCC} e o conteúdo deste trabalho é de maior conhecimento da equipe, a execução dessa atividade foi um pouco mais fácil que ao trabalho anterior portanto não temos muitas dificuldades a apresentar.
+
+\section{Soluções aplicadas}
+
+Para definir as regras da linguagem nos baseamos em linguagens de programação já consagradas, como Java e C++, seguindo algumas das regras utilizadas por estas
+linguagens, assim como soluções que foram discutidas em grupo para chegar a uma solução interessante para o fim deste trabalho.
+
+Com o auxilio do livro base e da documentação da ferramenta foi possível  sanar a maioria das nossas duvidas em relação ao Javacc e com o material e explicações das aulas
+pudemos criar as expressões regulares que julgamos mais adequadas a solução do problema.
+
+A solução adotada foi o \textbf{método do pânico}, onde as funções de analise são guardadas com a instrução \textbf{try catch} e é passado um objeto do tipo RecoverySet para fazer o track dos erros até o proximo símbolo terminal, onde retorna o erro encontrado.
+
+\section{Outputs}
+./exemplos/nao\_aceitos/programanaoaceito1.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito1.fun
+Encountered " "class" "class "" at line 1, column 35.\\
+Was expecting:\\
+    <IDENT> ... \\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+------\\
+./exemplos/nao\_aceitos/programanaoaceito2.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito2.fun
+Encountered " "boolean" "boolean "" at line 3, column 28.\\
+Was expecting:\\
+    "(" ...\\
+\\
+Encountered " ";" "; "" at line 3, column 35.
+Was expecting one of:\\
+    "]" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+-------\\
+./exemplos/nao\_aceitos/programanaoaceito3.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito3.fun\\
+Encountered " "int" "int "" at line 4, column 13.\\
+Was expecting one of:
+    "]" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito4.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito4.fun\\
+Encountered " "=" "= "" at line 5, column 16.\\
+Was expecting one of:
+    "]" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito5.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito5.fun
+Encountered " ")" ") "" at line 5, column 28.\\
+Was expecting:\\
+    <IDENT> ...\\
+\\
+Encountered " "\}" "\} "" at line 7, column 9.\\
+Was expecting one of:\\
+    "break" ...\\
+    "print" ...\\
+    "read" ...\\
+    "return" ...\\
+    "super" ...\\
+    "if" ...\\
+    "for" ...\\
+    "\{" ...
+    ";" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito6.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito6.fun\\
+Encountered " <NOT> "not "" at line 5, column 32.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    "*" ...\\
+    "/" ...\\
+    <AND> ...\\
+    <OR> ...\\
+    <XOR> ...\\
+    ">" ...\\
+    "<" ...\\
+    "==" ...\\
+    "<=" ...\\
+    ">=" ...
+    <NEQ> ...\\
+    "%" ...\\
+    ")" ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito7.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito7.fun\\
+Encountered " ")" ") "" at line 5, column 45.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    <NOT> ...\\
+    "(" ...\\
+    <float\_constant> ...\\
+    <integer\_constant> ...\\
+    <boolean\_constant> ...\\
+    <char\_constant> ...
+    <string\_constant> ...\\
+    "null" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito8.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito8.fun\\
+Encountered " <AND> "and "" at line 5, column 51.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    <NOT> ...\\
+    "(" ...\\
+    <float\_constant> ...\\
+    <integer\_constant> ...\\
+    <boolean\_constant> ...\\
+    <char\_constant> ...
+    <string\_constant> ...\\
+    "null" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito9.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito9.fun\\
+Encountered " ")" ") "" at line 5, column 35.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    <NOT> ...\\
+    "(" ...\\
+    <float\_constant> ...\\
+    <integer\_constant> ...\\
+    <boolean\_constant> ...\\
+    <char\_constant> ...
+    <string\_constant> ...\\
+    "null" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito10.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito10.fun\\
+Encountered " <NOT> "not "" at line 5, column 33.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    "*" ...\\
+    "/" ...\\
+    <AND> ...\\
+    <OR> ...\\
+    <XOR> ...\\
+    ">" ...\\
+    "<" ...\\
+    "==" ...\\
+    "<=" ...\\
+    ">=" ...
+    <NEQ> ...\\
+    "%" ...\\
+    ";" ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito11.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito11.fun
+Encountered " "=" "= "" at line 3, column 33.\\
+Was expecting:\\
+    <IDENT> ...\\
+\\
+Encountered " "\}" "\} "" at line 5, column 9.\\
+Was expecting one of:\\
+    "break" ...\\
+    "print" ...\\
+    "read" ...\\
+    "return" ...\\
+    "super" ...\\
+    "if" ...\\
+    "for" ...\\
+    "\{" ...
+    ";" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito12.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito12.fun\\
+Encountered " <string\_constant> "/"aaaa/" "" at line 3, column 44.\\
+Was expecting one of:\\
+    "=" ...
+    ")" ...\\
+    "]" ...\\
+    "," ...\\
+\\
+Encountered " "\}" "\} "" at line 6, column 1.
+Was expecting one of:\\
+    <EOF>\\
+    "class" ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito13.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito13.fun\\
+Encountered " <string\_constant> "/"aaaa/" "" at line 3, column 48.\\
+Was expecting one of:\\
+    "=" ...
+    ")" ...\\
+    "]" ...\\
+    "," ...\\
+\\
+Encountered " "int" "int "" at line 5, column 17.
+Was expecting one of:\\
+    "]" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito14.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito14.fun\\
+Encountered " "else" "else "" at line 6, column 9.\\
+Was expecting one of:\\
+    "break" ...\\
+    "print" ...\\
+    "read" ...\\
+    "return" ...\\
+    "super" ...\\
+    "if" ...\\
+    "for" ...\\
+    "\{" ...
+    ";" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+Encountered " "==" "== "" at line 7, column 18.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    <NOT> ...\\
+    "(" ...\\
+    <float\_constant> ...\\
+    <integer\_constant> ...\\
+    <boolean\_constant> ...\\
+    <char\_constant> ...
+    <string\_constant> ...\\
+    "null" ...\\
+    <IDENT> ...\\
+\\
+Encountered " <IDENT> "b "" at line 9, column 19.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    "*" ...\\
+    "/" ...\\
+    <AND> ...\\
+    <OR> ...\\
+    <XOR> ...\\
+    ">" ...\\
+    "<" ...\\
+    "==" ...\\
+    "<=" ...\\
+    ">=" ...\\
+    <NEQ> ...\\
+    "%" ...
+    ")" ...\\
+    "[" ...\\
+    "." ...\\
+\\
+Encountered " "+" "+ "" at line 9, column 21.\\
+Was expecting one of:
+    "=" ...\\
+    "[" ...\\
+    "." ...\\
+\\
+O programa foi corretamente analisado\\
+4 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito15.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito15.fun
+Encountered " "extends" "extends "" at line 1, column 7.\\
+Was expecting:\\
+    <IDENT> ...\\
+\\
+Encountered " "(" "( "" at line 3, column 16.\\
+Was expecting one of:
+    "]" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito16.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito16.fun
+Encountered " "boolean" "boolean "" at line 3, column 28.\\
+Was expecting:\\
+    "(" ...\\
+\\
+Encountered " ";" "; "" at line 3, column 35.
+Was expecting one of:\\
+    "]" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+2 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito17.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito17.fun\\
+Encountered " "int" "int "" at line 4, column 13.\\
+Was expecting one of:
+    "]" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito18.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito18.fun\\
+Encountered " "=" "= "" at line 5, column 16.\\
+Was expecting one of:
+    "]" ...\\
+    <IDENT> ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito19.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito19.fun\\
+Encountered " "if" "if "" at line 4, column 9.\\
+Was expecting one of:\\
+    "float" ...\\
+    "boolean" ...\\
+    "char" ...\\
+    "string" ...\\
+    "int" ...\\
+    "constructor" ...\\
+    "\}" ...\\
+    <IDENT> ...\\
+    "int" ...\\
+    "string" ...\\
+    "float" ...
+    "char" ...\\
+    "boolean" ...\\
+    <IDENT> ...\\
+\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+--------\\
+./exemplos/nao\_aceitos/programanaoaceito20.fun\\
+Trabalho de Introdução a Compiladores.\\
+Lendo o arquivo : ./exemplos/nao\_aceitos/programanaoaceito20.fun\\
+Encountered " <NOT> "not "" at line 5, column 32.\\
+Was expecting one of:\\
+    "+" ...\\
+    "-" ...\\
+    "*" ...\\
+    "/" ...\\
+    <AND> ...\\
+    <OR> ...\\
+    <XOR> ...\\
+    ">" ...\\
+    "<" ...\\
+    "==" ...\\
+    "<=" ...\\
+    ">=" ...
+    <NEQ> ...\\
+    "%" ...\\
+    ")" ...\\
+\\
+Encountered " "(" "( "" at line 6, column 27.\\
+Was expecting one of:\\
+    "=" ...
+    "[" ...\\
+    ";" ...\\
+    "," ...\\
+\\
+Encountered " ")" ") "" at line 6, column 34.\\
+Was expecting one of:
+    "=" ...\\
+    "[" ...\\
+    "." ...\\
+\\
+EOF found prematurely.\\
+EOF found prematurely.\\
+EOF found prematurely.\\
+EOF found prematurely\\
+EOF found prematurely.\\
+EOF found prematurely.\\
+EOF found prematurely.\\
+O programa foi corretamente analisado\\
+1 Erro sintatico encontrado\\
+
+\newpage
+\section{Conclusão}
+
+Com esse trabalhos conseguimos compreender melhor o funcionamento do tratamento de erros de um analisador sintático assim como o entendimento do uso da ferramenta Javacc para criação de um compilador.
+
+Com o presente concluímos a terceira etapa da série de trabalhos da disciplina com o intuito final de construir todas as etapas de um compilador, gerando assim uma linguagem de programação que possa ser compilada utilizando o material gerado nestes trabalhos.
+
+\bookmarksetup{startatroot}
+\end{document}

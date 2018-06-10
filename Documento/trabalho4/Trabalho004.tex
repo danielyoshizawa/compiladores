@@ -1,0 +1,196 @@
+% abtex2-modelo-artigo.tex, v-1.9.2 laurocesar
+% Copyright 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/ 
+%
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% abnTeX2: Modelo de Artigo Acadêmico em conformidade com
+% ABNT NBR 6022:2003: Informação e documentação - Artigo em publicação 
+% periódica científica impressa - Apresentação
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	11pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE % títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	portuguese,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+	]{abntex2}
+
+
+% ---
+% PACOTES
+% ---
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{nomencl} 			% Lista de simbolos
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{dpfloat, booktabs}
+% ---
+\graphicspath{ {images/} }		
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+% ---
+\usepackage{lipsum}				% para geração de dummy text
+% ---
+		
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+% ---
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Introdução a Compiladores - Trabalho 4 }
+\autor{Daniel Yoshizawa (13101269)\\Guilherme Nunes (13103611)\\Larissa Taw (14209793)\\Mayse Espíndola (11204360) }
+\local{Florianópolis, SC,  Brasil}
+\data{10 de junho de 2018}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={Modelo de artigo científico com abnTeX2},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{atigo científico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ---
+% Altera as margens padrões
+% ---
+\setlrmarginsandblock{3cm}{3cm}{*}
+\setulmarginsandblock{3cm}{3cm}{*}
+\checkandfixthelayout
+% ---
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+\setlength{\parskip}{0.2cm}
+
+\SingleSpacing
+
+\begin{document}
+
+\frenchspacing 
+
+\maketitle
+
+\begin{resumoumacoluna}
+
+Criação da árvore sintática assim como o inicio da construção de um analisador semântico, contendo uma tabela de símbolos, utilizando a ferramenta de geração de código Javacc para a disciplina de Introdução a compiladores, neste documento são apresentadas as dificuldades encontradas para a solução do trabalho e as modificações necessárias para adaptar o programa aos trabalhos 2 e 3.
+
+ \vspace{\onelineskip}
+ 
+ \noindent
+ \textbf{Palavras-chaves}: Introdução a Compiladores, Javacc, Fun, Analisador Semântico
+\end{resumoumacoluna}
+
+\newpage
+\tableofcontents*
+\newpage
+\textual
+\section{Descrição das atividade}
+
+Foi construído uma árvore sintática e iniciada a criação do analisador semântico para a linguagem de programação Fun, proposta na disciplina de Introdução a compiladores, baseada em Java e utilizando a ferramenta Javacc para geração de código.
+
+Neste trabalho foram criados os códigos para gerar a árvore sintática seguindo o capítulo 6 do livro base do trabalho assim como alterado o código, conforme capítulo 7, para exibir a árvore sintática após compilação do código base, não foi parametrizado no programa a opção de mostrar ou não a árvore impressa, decidimos por sempre exibir pois este se trata de um projeto didático e achamos que seria benéfico sempre imprimir a árvore. Foram adicionados outros tipos e operadores para se adequar as modificações oriundas dos trabalhos anteriores.
+
+Também foi criada a tabela de símbolos com modificações, segundo o capítulo 8 do livro base, dentre as modificações está permitir que \textit{EntryRec} armazene se dado atributo possui valor \textit{default}.
+
+A parte D sugere a implementação da primeira fase de análise semântica, que foi construída seguindo o capítulo 9 do livro, está sofreu algumas alterações para se adaptar aos trabalhos passados e foram adicionadas saídas de texto para informar quando uma classe era encontrada e quando está era adicionada a tabela de símbolos.
+ 
+\section{Dificuldades encontradas}
+
+Durante o desenvolvimento deste trabalho encontramos algumas dificuldades, entre elas o entendimento da organização dos arquivos, também a geração de um grande volume de novas classes e a geração de exemplos que abrangessem a maioria dos casos de erros possíveis e exemplos de funcionamento que fossem simples e claros.
+
+O tempo gasto para desenvolver essa etapa do trabalho foi a maior até o momento e exigiu bastante leitura e comunicação do grupo para conseguirmos orquestrar a melhor maneira de concluir o trabalho.
+
+\section{Soluções aplicadas}
+
+O grupo manteve comunicação durante a maior parte do tempo na realização deste trabalho, nos ajudando a compreender e solucionar os problemas que foram encontrados, grande parte da solução foi leitura e geração de código similar ao apresentado no livro. Quando nos deparamos com situações em que eram necessárias alterações para compatibilidade de código nós discutimos e tentamos aplicar a solução que julgamos mais adequadas.
+
+Um dos desafios foi qual o melhor lugar para imprimir que uma classe foi encontrada e quando ela é inserida na tabela de símbolos, porem com analise do código e consultas ao livro determinamos os dois pontos que para nos melhores se encaixam com o que foi pedido.
+
+\newpage
+\section{Conclusão}
+
+Com esse trabalhos conseguimos compreender melhor o funcionamento do analisador sintático, tabela de símbolos e analisador semântico assim como o entendimento do uso da ferramenta Javacc para criação de um compilador.
+
+Com o presente concluímos a quarta etapa da série de trabalhos da disciplina com o intuito final de construir todas as etapas de um compilador, gerando assim uma linguagem de programação que possa ser compilada utilizando o material gerado nestes trabalhos.
+
+\bookmarksetup{startatroot}
+\end{document}
