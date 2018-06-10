@@ -13,6 +13,7 @@ package parser;
 import java.io.*;
 import recovery.*;
 import syntacticTree.*;
+import semanalysis.*;
 
 public class Fun
 {
@@ -119,6 +120,16 @@ public class Fun
                     {
                         PrintTree prt = new PrintTree();
                         prt.printRoot(root);
+
+                        ClassCheck tc = new ClassCheck();
+                        try {
+                             tc.ClassCheckRoot(root);
+                             System.out.println("0 Semantic Errors found");
+                        }
+                        catch (SemanticException e)
+                        {
+                            System.out.println(e.getMessage());
+                        }
                     }
             }
             catch (java.io.FileNotFoundException e)

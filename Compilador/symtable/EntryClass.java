@@ -10,7 +10,7 @@ public class EntryClass extends EntryTable {
         parent = null;
     }
 
-    public String completeName() // devolve nome completo da classe
+    public String completeName()
      {
         String p;
         Symtable t;
@@ -20,15 +20,15 @@ public class EntryClass extends EntryTable {
         up = (EntryClass) t.levelup;
 
         if (up == null) {
-            p = ""; // n�o � uma classe aninhada
+            p = "";
         } else {
-            p = up.completeName() + "$"; // classe aninhada
+            p = up.completeName() + "$";
         }
 
-        return p + name; // retorna nome n�vel superior $ nome da classe
+        return p + name;
     }
 
-    public String dscJava() // devolve descritor de tipo
+    public String dscJava()
      {
         return "L" + completeName() + ";";
     }

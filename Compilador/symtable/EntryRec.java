@@ -5,13 +5,13 @@ public class EntryRec extends EntryTable {
     public int dim;
     public EntryRec next;
     public int cont;
-    public boolean default;
+    public boolean defaultArg;
 
     public EntryRec(EntryTable p, int d, int c, boolean def) {
         type = p;
         cont = c;
         dim = d;
-        default = def;
+        defaultArg = def;
         next = null;
     }
 
@@ -19,7 +19,7 @@ public class EntryRec extends EntryTable {
         type = p;
         cont = c;
         dim = d;
-        default = def;
+        defaultArg = def;
         next = t;
     }
 

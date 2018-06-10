@@ -28,52 +28,40 @@ public class Symtable {
     }
 
     public void beginScope() {
-        scptr++; // inicia novo aninhamento de vari�veis
+        scptr++;
     }
 
     public void endScope() {
         while ((top != null) && (top.scope == scptr))
-            top = top.next; // retira todas as vari�veis do aninhamento corrente
+            top = top.next;
 
-        scptr--; // finaliza aninhamento corrente
+        scptr--;
     }
 
-    /* Esse metodo procura o simbolo x na tabela e tambem na(s) tabela(s) de
-    nivel superior, apontada por levelup. Procura por uma entrada do
-    tipo EntryClass ou EntrySimple */
     public EntryTable classFindUp(String x) {
         EntryTable p = top;
 
-        // para cada elemento da tabela corrente
         while (p != null) {
-            // verifica se � uma entrada de classe ou tipo simples e compara o nome
             if (((p instanceof EntryClass) || (p instanceof EntrySimple)) &&
                     p.name.equals(x)) {
                 return p;
             }
 
-            p = p.next; // pr�xima entrada
+            p = p.next;
         }
 
-        if (levelup == null) { // se n�o achou e � o n�vel mais externo 
+        if (levelup == null) {
 
-            return null; // retorna null
+            return null;
         }
 
-        // procura no n�vel mais externo 
         return levelup.mytable.classFindUp(x);
     }
 
-    /* Esse metodo procura o simbolo x na tabela e tambem na(s) tabela(s) da(s)
-    superclasse(s), apontada por levelup.parent. Procura por uma entrada do
-    tipo EntryVar */
     public EntryVar varFind(String x) {
         return varFind(x, 1);
     }
 
-    /* Esse metodo procura a n-esima ocorrencia do simbolo x na tabela e tambem
-    na(s) tabela(s) da(s)  superclasse(s), apontada por levelup.parent. Procura
-    por uma entrada do  tipo EntryVar */
     public EntryVar varFind(String x, int n) {
         EntryTable p = top;
         EntryClass q;
@@ -97,9 +85,6 @@ public class Symtable {
         return q.parent.nested.varFind(x, n);
     }
 
-    /* Esse metodo procura o simbolo x com uma lista de parametros igual a r na
-    tabela e tambem na(s) tabela(s) da(s)  superclasse(s), apontada por
-    levelup.parent. Procura por uma entrada do  tipo EntryMethod */
     public EntryMethod methodFind(String x, EntryRec r) {
         EntryTable p = top;
         EntryClass q;
@@ -131,20 +116,14 @@ public class Symtable {
         return q.parent.nested.methodFind(x, r);
     }
 
-    /* Esse metodo procura o simbolo x com uma lista de parametros igual a r
-    apenas na tabela, nao na(s) tabela(s) da(s)  superclasse(s),
-    apontada por levelup.parent. Procura por uma entrada do  tipo EntryMethod */
     public EntryMethod methodFindInclass(String x, EntryRec r) {
         EntryTable p = top;
         EntryClass q;
 
-        // para cada entrada da tabela
         while (p != null) {
-            // verifica se tipo � EntryMethod e compara o nome
             if (p instanceof EntryMethod && p.name.equals(x)) {
                 EntryMethod t = (EntryMethod) p;
 
-                // compara os par�metros
                 if (t.param == null) {
                     if (r == null) {
                         return t;
@@ -156,9 +135,9 @@ public class Symtable {
                 }
             }
 
-            p = p.next; // pr�xima entrada
+            p = p.next;
         }
 
-        return null; // n�o achou
+        return null;
     }
 }
