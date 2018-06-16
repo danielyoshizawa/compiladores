@@ -121,9 +121,23 @@ public class Fun
                         PrintTree prt = new PrintTree();
                         prt.printRoot(root);
 
-                        ClassCheck tc = new ClassCheck();
+                       /* ClassCheck tc = new ClassCheck();
                         try {
                              tc.ClassCheckRoot(root);
+                             System.out.println("0 erros semanticos encotrados");
+                        }
+                        catch (SemanticException e)
+                        {
+                            System.out.println(e.getMessage());
+                        }
+
+                        VarCheck tc = new VarCheck();
+                        try {
+                             tc.VarCheckRoot(root); */
+
+                        TypeCheck tc = new TypeCheck();
+                        try {
+                             tc.TypeCheckRoot(root);
                              System.out.println("0 erros semanticos encotrados");
                         }
                         catch (SemanticException e)
