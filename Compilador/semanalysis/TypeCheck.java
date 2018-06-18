@@ -14,6 +14,9 @@ public class TypeCheck extends VarCheck {
     protected final EntrySimple STRING_TYPE;
     protected final EntrySimple INT_TYPE;
     protected final EntrySimple NULL_TYPE;
+    protected final EntrySimple CHAR_TYPE;
+    protected final EntrySimple FLOAT_TYPE;
+    protected final EntrySimple BOOLEAN_TYPE;
     protected EntryMethod CurMethod;
     boolean cansuper;
 
@@ -25,6 +28,10 @@ public class TypeCheck extends VarCheck {
         INT_TYPE = (EntrySimple) Maintable.classFindUp("int");
         NULL_TYPE = new EntrySimple("$NULL$");
         Maintable.add(NULL_TYPE);
+        CHAR_TYPE = (EntrySimple) Maintable.classFindUp("char");
+        FLOAT_TYPE = (EntrySimple) Maintable.classFindUp("float");
+        BOOLEAN_TYPE = (EntrySimple) Maintable.classFindUp("boolean");
+
     }
 
     public void TypeCheckRoot(ListNode x) throws SemanticException {
@@ -413,9 +420,10 @@ public class TypeCheck extends VarCheck {
 
         t = TypeCheckExpreNode(x.expr);
 
-        if ((t.ty != STRING_TYPE) && (t.ty != INT_TYPE)) {
+        if ((t.ty != STRING_TYPE) && (t.ty != INT_TYPE) && (t.ty != CHAR_TYPE) && (t.ty != FLOAT_TYPE) && (t.ty != BOOLEAN_TYPE))
+        {
             throw new SemanticException(x.position,
-                "Invalid type. Must be int or string");
+                "Invalid type. Must be int, string, char, float or boolean.");
         }
 
         if (t.dim != 0) {
@@ -564,7 +572,7 @@ public class TypeCheck extends VarCheck {
         try {
             t = TypeCheckExpreNode(x.expr);
 
-            if ((t.ty != INT_TYPE) || (t.dim != 0)) {
+            if (((t.ty != INT_TYPE) || (t.ty != BOOLEAN_TYPE) ) || (t.dim != 0)) {
                 throw new SemanticException(x.expr.position,
                     "Integer expression expected");
             }
@@ -740,7 +748,7 @@ public class TypeCheck extends VarCheck {
 
         return t;
     }
-
+// TODO : Verificar se precisa dos outros operadores
     public type TypeCheckRelationalNode(RelationalNode x)
         throws SemanticException {
         type t1;
@@ -759,31 +767,41 @@ public class TypeCheck extends VarCheck {
             return new type(INT_TYPE, 0);
         }
 
+        if ((t1.ty == FLOAT_TYPE) && (t2.ty == FLOAT_TYPE)) {
+            return new type(FLOAT_TYPE, 0);
+        }
+
+        if ((t1.ty == BOOLEAN_TYPE) && (t2.ty == BOOLEAN_TYPE)) {
+            return new type(BOOLEAN_TYPE, 0);
+        }
+
+        if ((t1.ty == CHAR_TYPE) && (t2.ty == CHAR_TYPE)) {
+            return new type(CHAR_TYPE, 0);
+        }
+
         if (t1.dim != t2.dim) {
             throw new SemanticException(x.position,
                 "Can not compare objects with different dimensions");
         }
 
-        /*
-        if ((op != langXConstants.EQ) && (op != langXConstants.NEQ) &&
+
+        if ((op != FunConstants.EQ) && (op != FunConstants.NEQ) &&
                 (t1.dim > 0)) {
             throw new SemanticException(x.position,
                 "Can not use " + x.position.image + " for arrays");
-        } */
+        }
 
-        /*
+
         if ((isSubClass(t2.ty, t1.ty) || isSubClass(t1.ty, t2.ty)) &&
-                ((op == langXConstants.NEQ) || (op == langXConstants.EQ))) {
+                ((op == FunConstants.NEQ) || (op == FunConstants.EQ))) {
             return new type(INT_TYPE, 0);
-        } */
+        }
 
-
-        /*
         if (((t1.ty instanceof EntryClass && (t2.ty == NULL_TYPE)) ||
                 (t2.ty instanceof EntryClass && (t1.ty == NULL_TYPE))) &&
-                ((op == langXConstants.NEQ) || (op == langXConstants.EQ))) {
+                ((op == FunConstants.NEQ) || (op == FunConstants.EQ))) {
             return new type(INT_TYPE, 0);
-        } */
+        }
 
         throw new SemanticException(x.position,
             "Invalid types for " + x.position.image);
@@ -793,8 +811,9 @@ public class TypeCheck extends VarCheck {
         type t1;
         type t2;
         int op;
-        int i;
-        int j;
+        int i; // Inteiro
+        int j; // String
+
 
         if (x == null) {
             return null;
@@ -826,11 +845,10 @@ public class TypeCheck extends VarCheck {
         if (i == 2) {
             return new type(INT_TYPE, 0);
         }
-// TODO : Ajustar LangXConstants
-        /*
-        if ((op == langXConstants.PLUS) && ((i + j) == 2)) {
+
+        if ((op == FunConstants.PLUS) && ((i + j) == 2)) {
             return new type(STRING_TYPE, 0);
-        } */
+        }
 
         throw new SemanticException(x.position,
             "Invalid types for " + x.position.image);
@@ -886,6 +904,159 @@ public class TypeCheck extends VarCheck {
         return new type(INT_TYPE, 0);
     }
 
+    public type TypeCheckAndNode(AndNode x) throws SemanticException {
+        type t1;
+        type t2;
+        int op;
+        int i; // INT
+        int j; // BOOLEAN
+
+
+        if (x == null) {
+            return null;
+        }
+
+        op = x.position.kind;
+        t1 = TypeCheckExpreNode(x.expr1);
+        t2 = TypeCheckExpreNode(x.expr2);
+
+        if ((t1.dim > 0) || (t2.dim > 0)) {
+            throw new SemanticException(x.position,
+                "Can not use " + x.position.image + " for arrays");
+        }
+
+        i = j = 0;
+
+        if (t1.ty == INT_TYPE) {
+            i++;
+        } else if (t1.ty == BOOLEAN_TYPE) {
+            j++;
+        }
+
+        if (t2.ty == INT_TYPE) {
+            i++;
+        } else if (t2.ty == BOOLEAN_TYPE) {
+            j++;
+        }
+
+        if ((op == FunConstants.AND) && ((i + j) == 2)) {
+            return new type(BOOLEAN_TYPE, 0);
+        }
+
+        throw new SemanticException(x.position,
+            "Invalid types for " + x.position.image);
+    }
+
+    public type TypeCheckOrNode(OrNode x) throws SemanticException {
+        type t1;
+        type t2;
+        int op;
+        int i; // Inteiro
+        int j; // Boolean
+
+
+        if (x == null) {
+            return null;
+        }
+
+        op = x.position.kind;
+        t1 = TypeCheckExpreNode(x.expr1);
+        t2 = TypeCheckExpreNode(x.expr2);
+
+        if ((t1.dim > 0) || (t2.dim > 0)) {
+            throw new SemanticException(x.position,
+                "Can not use " + x.position.image + " for arrays");
+        }
+
+        i = j = 0;
+
+        if (t1.ty == INT_TYPE) {
+            i++;
+        } else if (t1.ty == BOOLEAN_TYPE) {
+            j++;
+        }
+
+        if (t2.ty == INT_TYPE) {
+            i++;
+        } else if (t2.ty == BOOLEAN_TYPE) {
+            j++;
+        }
+
+        if ((op == FunConstants.OR) && ((i + j) == 2)) {
+            return new type(BOOLEAN_TYPE, 0);
+        }
+
+        throw new SemanticException(x.position,
+            "Invalid types for " + x.position.image);
+    }
+
+    public type TypeCheckXorNode(XorNode x) throws SemanticException {
+        type t1;
+        type t2;
+        int op;
+        int i; // Inteiro
+        int j; // BOOLEAN
+
+
+        if (x == null) {
+            return null;
+        }
+
+        op = x.position.kind;
+        t1 = TypeCheckExpreNode(x.expr1);
+        t2 = TypeCheckExpreNode(x.expr2);
+
+        if ((t1.dim > 0) || (t2.dim > 0)) {
+            throw new SemanticException(x.position,
+                "Can not use " + x.position.image + " for arrays");
+        }
+
+        i = j = 0;
+
+        if (t1.ty == INT_TYPE) {
+            i++;
+        } else if (t1.ty == BOOLEAN_TYPE) {
+            j++;
+        }
+
+        if (t2.ty == INT_TYPE) {
+            i++;
+        } else if (t2.ty == BOOLEAN_TYPE) {
+            j++;
+        }
+
+        if ((op == FunConstants.XOR) && ((i + j) == 2)) {
+            return new type(BOOLEAN_TYPE, 0);
+        }
+
+        throw new SemanticException(x.position,
+            "Invalid types for " + x.position.image);
+    }
+
+    public type TypeCheckNotNode(NotNode x) throws SemanticException {
+        type t;
+        int op;
+
+        if (x == null) {
+            return null;
+        }
+
+        op = x.position.kind;
+        t = TypeCheckExpreNode(x.expr);
+
+        if (t.dim > 0) {
+            throw new SemanticException(x.position,
+                "Can not use " + x.position.image + " for arrays");
+        }
+
+        if ((op == FunConstants.NOT) && (t.ty == INT_TYPE || t.ty == BOOLEAN_TYPE) ) {
+            return new type(BOOLEAN_TYPE, 0);
+        }
+
+        throw new SemanticException(x.position,
+            "Invalid types for " + x.position.image);
+    }
+
     public type TypeCheckIntConstNode(IntConstNode x) throws SemanticException {
         int k;
 
@@ -916,6 +1087,50 @@ public class TypeCheck extends VarCheck {
         }
 
         return new type(NULL_TYPE, 0);
+    }
+
+
+    public type TypeCheckCharConstNode(CharConstNode x) throws SemanticException
+    {
+        if (x == null) {
+            return null;
+        }
+
+        return new type(CHAR_TYPE, 0);
+    }
+
+    public type TypeCheckFloatConstNode(FloatConstNode x) throws SemanticException
+    {
+        float k;
+
+        if (x == null) {
+            return null;
+        }
+
+        try {
+            k = Float.parseFloat(x.position.image);
+        } catch (NumberFormatException e) {
+            throw new SemanticException(x.position, "Invalid float constant");
+        }
+
+        return new type(INT_TYPE, 0);
+    }
+
+    public type TypeCheckBooleanConstNode(BooleanConstNode x) throws SemanticException
+    {
+        boolean k;
+
+        if (x == null) {
+            return null;
+        }
+
+        try {
+            k = Boolean.parseBoolean(x.position.image);
+        } catch (NumberFormatException e) {
+            throw new SemanticException(x.position, "Invalid boolean constant");
+        }
+
+        return new type(INT_TYPE, 0);
     }
 
     public type TypeCheckVarNode(VarNode x) throws SemanticException {
@@ -1049,12 +1264,26 @@ public class TypeCheck extends VarCheck {
             return TypeCheckStringConstNode((StringConstNode) x);
         } else if (x instanceof NullConstNode) {
             return TypeCheckNullConstNode((NullConstNode) x);
+        } else if (x instanceof IntConstNode) {
+            return TypeCheckCharConstNode((CharConstNode) x);
+        } else if (x instanceof CharConstNode) {
+            return TypeCheckFloatConstNode((FloatConstNode) x);
+        } else if (x instanceof BooleanConstNode) {
+            return TypeCheckBooleanConstNode((BooleanConstNode) x);
         } else if (x instanceof IndexNode) {
             return TypeCheckIndexNode((IndexNode) x);
         } else if (x instanceof DotNode) {
             return TypeCheckDotNode((DotNode) x);
         } else if (x instanceof VarNode) {
             return TypeCheckVarNode((VarNode) x);
+        } else if (x instanceof AndNode) {
+            return TypeCheckAndNode((AndNode) x);
+        } else if (x instanceof OrNode) {
+            return TypeCheckOrNode((OrNode) x);
+        } else if (x instanceof XorNode) {
+            return TypeCheckXorNode((XorNode) x);
+        } else if (x instanceof NotNode) {
+            return TypeCheckNotNode((NotNode) x);
         } else {
             return null;
         }

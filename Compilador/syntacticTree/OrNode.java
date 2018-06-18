@@ -4,10 +4,12 @@ import parser.*;
 
 
 public class OrNode extends ExpreNode {
-    public ExpreNode expr;
+    public ExpreNode expr1;
+    public ExpreNode expr2;
 
-    public OrNode(Token t, ExpreNode e) {
+    public OrNode(Token t, ExpreNode e1, ExpreNode e2) {
         super(t);
-        expr = e;
+        expr1 = e1;
+        expr2 = e2;
     }
 }
