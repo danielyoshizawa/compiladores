@@ -685,18 +685,21 @@ public class PrintTree {
         }
 
         x.number = kk++;
-        numberExpreNode(x.expr);
+        numberExpreNode(x.expr1);
+        numberExpreNode(x.expr2);
     }
 
-    public void printXotNode(XorNode x) {
+    public void printXorNode(XorNode x) {
         if (x == null) {
             return;
         }
 
         System.out.println();
-        System.out.print(x.number + ": XorNode ===> " + x.position.image +
-            " " + x.expr.number);
-        printExpreNode(x.expr);
+        System.out.print(x.number + ": XorNode ===> " + x.expr1.number + " " +
+            x.position.image + " " + x.expr2.number);
+
+        printExpreNode(x.expr1);
+        printExpreNode(x.expr2);
     }
 
 // -- Or
@@ -706,7 +709,8 @@ public class PrintTree {
         }
 
         x.number = kk++;
-        numberExpreNode(x.expr);
+        numberExpreNode(x.expr1);
+        numberExpreNode(x.expr2);
     }
 
     public void printOrNode(OrNode x) {
@@ -715,9 +719,11 @@ public class PrintTree {
         }
 
         System.out.println();
-        System.out.print(x.number + ": OrNode ===> " + x.position.image +
-            " " + x.expr.number);
-        printExpreNode(x.expr);
+        System.out.print(x.number + ": OrNode ===> " + x.expr1.number + " " +
+            x.position.image + " " + x.expr2.number);
+
+        printExpreNode(x.expr1);
+        printExpreNode(x.expr2);
     }
 
 // -- And
@@ -727,7 +733,8 @@ public class PrintTree {
         }
 
         x.number = kk++;
-        numberExpreNode(x.expr);
+        numberExpreNode(x.expr1);
+        numberExpreNode(x.expr2);
     }
 
     public void printAndNode(AndNode x) {
@@ -736,9 +743,11 @@ public class PrintTree {
         }
 
         System.out.println();
-        System.out.print(x.number + ": AndNode ===> " + x.position.image +
-            " " + x.expr.number);
-        printExpreNode(x.expr);
+        System.out.print(x.number + ": AndNode ===> " + x.expr1.number + " " +
+            x.position.image + " " + x.expr2.number);
+
+        printExpreNode(x.expr1);
+        printExpreNode(x.expr2);
     }
 
 // -- Not
@@ -817,6 +826,60 @@ public class PrintTree {
         System.out.print(x.number + ": NullConstNode ===> " + x.position.image);
     }
 
+    // -------------------------- Constante booleana ----------------------
+    public void numberBooleanConstNode(BooleanConstNode x) {
+        if (x == null) {
+            return;
+        }
+
+        x.number = kk++;
+    }
+
+    public void printBooleanConstNode(BooleanConstNode x) {
+        if (x == null) {
+            return;
+        }
+
+        System.out.println();
+        System.out.print(x.number + ": BooleanConstNode ===> " + x.position.image);
+    }
+
+    // -------------------------- Constante float ----------------------
+    public void numberFloatConstNode(FloatConstNode x) {
+        if (x == null) {
+            return;
+        }
+
+        x.number = kk++;
+    }
+
+    public void printFloatConstNode(FloatConstNode x) {
+        if (x == null) {
+            return;
+        }
+
+        System.out.println();
+        System.out.print(x.number + ": FloatConstNode ===> " + x.position.image);
+    }
+
+    // -------------------------- Constante inteira ----------------------
+    public void numberCharConstNode(CharConstNode x) {
+        if (x == null) {
+            return;
+        }
+
+        x.number = kk++;
+    }
+
+    public void printCharConstNode(CharConstNode x) {
+        if (x == null) {
+            return;
+        }
+
+        System.out.println();
+        System.out.print(x.number + ": CharConstNode ===> " + x.position.image);
+    }
+
     // -------------------------------- Nome de vari�vel ------------------
     public void numberVarNode(VarNode x) {
         if (x == null) {
@@ -836,7 +899,7 @@ public class PrintTree {
             ((x.dim == 0) ? "" : ("[" + x.dim + "]")));
     }
 
-    // ---------------------------- Chamada de m�todo ------------------------
+    // ---------------------------- Chamada de metodo ------------------------
     public void numberCallNode(CallNode x) {
         if (x == null) {
             return;
@@ -932,6 +995,20 @@ public class PrintTree {
             printDotNode((DotNode) x);
         } else if (x instanceof VarNode) {
             printVarNode((VarNode) x);
+        } else if (x instanceof AndNode) {
+            printAndNode((AndNode) x);
+        } else if (x instanceof OrNode) {
+            printOrNode((OrNode) x);
+        } else if (x instanceof XorNode) {
+            printXorNode((XorNode) x);
+        } else if (x instanceof NotNode) {
+            printNotNode((NotNode) x);
+        } else if (x instanceof BooleanConstNode) {
+            printBooleanConstNode((BooleanConstNode) x);
+        } else if (x instanceof FloatConstNode) {
+            printFloatConstNode((FloatConstNode) x);
+        } else if (x instanceof CharConstNode) {
+            printCharConstNode((CharConstNode) x);
         }
     }
 
@@ -962,6 +1039,20 @@ public class PrintTree {
             numberDotNode((DotNode) x);
         } else if (x instanceof VarNode) {
             numberVarNode((VarNode) x);
+        } else if (x instanceof AndNode) {
+            numberAndNode((AndNode) x);
+        } else if (x instanceof OrNode) {
+            numberOrNode((OrNode) x);
+        } else if (x instanceof XorNode) {
+            numberXorNode((XorNode) x);
+        } else if (x instanceof NotNode) {
+            numberNotNode((NotNode) x);
+        } else if (x instanceof BooleanConstNode) {
+            numberBooleanConstNode((BooleanConstNode) x);
+        } else if (x instanceof FloatConstNode) {
+            numberFloatConstNode((FloatConstNode) x);
+        } else if (x instanceof CharConstNode) {
+            numberCharConstNode((CharConstNode) x);
         }
     }
 

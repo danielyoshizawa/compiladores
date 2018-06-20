@@ -491,6 +491,7 @@ VarDeclNode vardecl(RecoverySet g) throws ParseEOFException :
 Token t1 = null, t2;
 int k = 0;
 ListNode l = null;
+StatementNode s = null;
 }
 {
 try {
@@ -651,7 +652,6 @@ catch (ParseException e)
 }
 }
 
-
 AtribNode atribstat(RecoverySet g) throws ParseEOFException :
 {
 ExpreNode e1 = null, e2 = null;
@@ -662,7 +662,7 @@ RecoverySet f1 = new RecoverySet(ASSIGN).union(g);
 {
 try {
     e1 = lvalue(f1) t1 = <ASSIGN>
-    ( e2 = alocexpression(g) | e2 = expression(g))
+    ( e2 = alocexpression(g) | e2 = expression(g) )
     { return new AtribNode(t1, e1, e2); }
 }
 catch (ParseException e)
@@ -880,7 +880,7 @@ Token t = null;
 try {
     e1 = numexpr()
     [
-      ( t = <LT> | t = <GT> | t = <LE> | t = <GE> | t = <EQ> | t = <NEQ>)
+      ( t = <LT> | t = <GT> | t = <LE> | t = <GE> | t = <EQ> | t = <NEQ> | t = <AND> | t = <OR> | t = <XOR> | t = <NOT> )
       e2 = numexpr()
         { e1 = new RelationalNode(t, e1, e2); }
     ]
@@ -915,26 +915,41 @@ ExpreNode e1 = null, e2;
 Token t;
 }
 {
-    e1 = xorexpr()
+    e1 = unaryexpr()
     (
        ( t = <MULTIPLY> | t = <DIVIDE>| t = <REM>)
-       e2 = xorexpr()
+       e2 = unaryexpr()
          { e1 = new MultNode(t, e1, e2); }
     )*
     { return e1; }
 }
-
+/*
 ExpreNode xorexpr() throws ParseEOFException :
 {
 ExpreNode e1 = null, e2;
 Token t;
 }
 {
-	e1 = andexpr()
+	e1 = factor()
 	(
-	    ( t = <XOR> | t = <OR> )
-	    e2 = andexpr()
-	    { e1 = new MultNode(t, e1, e2); }
+	    ( t = <XOR> )
+	    e2 = factor()
+	    { e1 = new XorNode(t, e1, e2); }
+	)*
+	{ return e1; }
+}
+
+ExpreNode orexpr() throws ParseEOFException :
+{
+ExpreNode e1 = null, e2 = null;
+Token t;
+}
+{
+	e1 = factor()
+	(
+	    ( t = <OR> )
+	    e2 = factor()
+	    { e1 = new OrNode(t, e1, e2); }
 	)*
 	{ return e1; }
 }
@@ -945,11 +960,11 @@ ExpreNode e1 = null, e2;
 Token t;
 }
 {
-	e1 = notexpr()
+	e1 = factor()
 	(
 	 ( t = <AND> )
-	e2 = notexpr()
-	{ e1 = new MultNode(t, e1, e2); }
+	e2 = factor()
+	{ e1 = new AndNode(t, e1, e2); }
 	)*
 	{ return e1; }
 }
@@ -960,9 +975,11 @@ ExpreNode e;
 Token t = null;
 }
 {
-	[( t = <NOT>)] e = unaryexpr()
+	( ( t = <NOT>)
+	e = factor()
+	{  e = new NotNode(t, e); } )
 	{ return e; }
-}
+} */
 
 ExpreNode unaryexpr() throws ParseEOFException :
 {

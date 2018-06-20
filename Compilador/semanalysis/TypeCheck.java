@@ -133,9 +133,11 @@ public class TypeCheck extends VarCheck {
 
             if (l != null) {
                 throw new SemanticException(q.position,
-                    "Variable " + q.position.image + " already declared");
+                        "Variable " + q.position.image + " already declared");
             }
+
         }
+
     }
 
     public void TypeCheckConstructDeclListNode(ListNode x) {
@@ -244,7 +246,7 @@ public class TypeCheck extends VarCheck {
             n++;
 
             e = Curtable.classFindUp(q.position.image);
-
+// TODO  VERIFICAR DEFAULT
             r = new EntryRec(e, u.dim, n, r, false);
             p = p.next;
         }
@@ -1113,7 +1115,7 @@ public class TypeCheck extends VarCheck {
             throw new SemanticException(x.position, "Invalid float constant");
         }
 
-        return new type(INT_TYPE, 0);
+        return new type(FLOAT_TYPE, 0);
     }
 
     public type TypeCheckBooleanConstNode(BooleanConstNode x) throws SemanticException
@@ -1130,7 +1132,7 @@ public class TypeCheck extends VarCheck {
             throw new SemanticException(x.position, "Invalid boolean constant");
         }
 
-        return new type(INT_TYPE, 0);
+        return new type(BOOLEAN_TYPE, 0);
     }
 
     public type TypeCheckVarNode(VarNode x) throws SemanticException {
