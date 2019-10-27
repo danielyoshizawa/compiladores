@@ -1,18 +1,13 @@
-// Teste para a sintaxe base do programa
-class analisador
+class analisadorSemantico 
 {
-
-}
-
-class analisadorSemantico extends analisador
-{
-    int inteiro;
+    int numero;
     string palavra;
 
     constructor (string str)
     {
-        inteiro = 10;
-        palavra = str;
+        numero = numero + numero;
+        palavra = numero + palavra;
+        
     }
 
     string returnSomething()
@@ -22,12 +17,7 @@ class analisadorSemantico extends analisador
 
     string ifElseTest(int inteiroParam)
     {
-        if ( inteiroParam > inteiro )
-            print "Inteiro maior que 10";
-        else
-            print "Inteiro menor que 10";;
+       return palavra;
     }
-    /* nesse exemplo, o analisador semantico aceitara
-    o comando if, pois ele vai checar que o "inteiroParam" 
-    e o "inteiro" sao do tipo int, ou seja, eles podem 
-    fazer a comparacao utilizando o sinal >
+    
+}

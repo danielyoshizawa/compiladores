@@ -25,13 +25,7 @@ class test4 {
         bb = true;
         /* nesse exemplo, o analisador esta comparando um boolean com outro boolean utilizando um operador de igualdade, 
         o programa aceita que o operador seja usado entre dois booleans */
-        if ( bb == b)
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
+
     }
 
     int sum10Times(int i)

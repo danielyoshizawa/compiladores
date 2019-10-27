@@ -17,8 +17,7 @@ class analisadorsintatico extends analisador
         boolean b = inteiro/palavra;
         
         /* Ocorrera um erro na linha acima pois nao deve ser possivel
-        que um inteiro e um int recebam o operador de divisao, tampouco
-        que uma variavel boolean receba este resultado */
+        que o metodo do tipo string nao retorne nada */
         
     }
 }

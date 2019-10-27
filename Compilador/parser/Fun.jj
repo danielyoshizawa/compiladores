@@ -855,7 +855,7 @@ RecoverySet f1 = new RecoverySet(RPAREN).union(g),
       LOOKAHEAD(2) t2 = <IDENT> <LPAREN> l = arglist(f1) <RPAREN>
          { e1 = new NewObjectNode(t1, t2, l); }
 |
-      ( t2 = <INTEGER> | t2 = <STRING> | t2 = <IDENT> )
+      ( t2 = <INTEGER> | t2 = <FLOAT> | t2 = <BOOLEAN> | t2 = <CHAR> |t2 = <STRING> | t2 = <IDENT> )
       (<LBRACKET> e2 = expression(f2) <RBRACKET>
               {
                 if ( l == null )

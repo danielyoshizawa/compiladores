@@ -4,7 +4,7 @@ class extends class analisador
 
     }
 
-    int abc abs ()
+    int abs ()
     {
     	string s = "12" + true;
     }
